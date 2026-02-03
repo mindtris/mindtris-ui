@@ -1,11 +1,28 @@
-'use client'
+/**
+ * ButtonTooltip / Tooltip: Lightweight tooltip wrapper.
+ *
+ * Design-system contract
+ * - Scope: UI-only primitive (2-app rule). No domain terms, no API calls.
+ * - Tokens-only: uses semantic token classes only.
+ * - A11y: trigger remains provided by consumer; tooltip shows on hover/focus.
+ *
+ * Note: This is the "simple" tooltip API used across the playground.
+ * For Radix tooltip primitives (Trigger/Content/Provider), see `ui/tooltip.tsx`.
+ *
+ * @author: @mindtris-team
+ * @version: 0.2.0
+ * @since: 2026-02-01
+ */
 
-import React, { useState } from 'react'
+"use client"
+
+import * as React from 'react'
 import { Transition } from '@headlessui/react'
 import { cn } from '../../lib/utils'
 
-interface ButtonTooltipProps {
+export interface ButtonTooltipProps {
   children: React.ReactNode
+  /** Tooltip content */
   content: React.ReactNode
   position?: 'top' | 'bottom' | 'left' | 'right'
   bg?: 'dark' | 'light'
@@ -23,7 +40,7 @@ export function ButtonTooltip({
   className,
   disabled = false,
 }: ButtonTooltipProps) {
-  const [tooltipOpen, setTooltipOpen] = useState(false)
+  const [tooltipOpen, setTooltipOpen] = React.useState(false)
 
   const positionOuterClasses = (pos: ButtonTooltipProps['position']) => {
     switch (pos) {
@@ -35,6 +52,19 @@ export function ButtonTooltip({
         return 'top-full left-1/2 -translate-x-1/2'
       default:
         return 'bottom-full left-1/2 -translate-x-1/2'
+    }
+  }
+
+  const positionInnerClasses = (pos: ButtonTooltipProps['position']) => {
+    switch (pos) {
+      case 'right':
+        return 'ml-2'
+      case 'left':
+        return 'mr-2'
+      case 'bottom':
+        return 'mt-2'
+      default:
+        return 'mb-2'
     }
   }
 
@@ -62,31 +92,16 @@ export function ButtonTooltip({
     }
   }
 
-  const positionInnerClasses = (pos: ButtonTooltipProps['position']) => {
-    switch (pos) {
-      case 'right':
-        return 'ml-2'
-      case 'left':
-        return 'mr-2'
-      case 'bottom':
-        return 'mt-2'
-      default:
-        return 'mb-2'
-    }
-  }
-
   const getArrowElement = () => {
-    if (position === 'bottom') {
-      return (
-        <div
-          className={cn(
-            'absolute bottom-full left-1/2 -translate-x-1/2 translate-y-1 w-2.5 h-2.5 rotate-45 border border-border',
-            bg === 'dark' ? 'bg-foreground' : 'bg-popover'
-          )}
-        />
-      )
-    }
-    return null
+    if (position !== 'bottom') return null
+    return (
+      <div
+        className={cn(
+          'absolute bottom-full left-1/2 -translate-x-1/2 translate-y-1 w-2.5 h-2.5 rotate-45 border border-border',
+          bg === 'dark' ? 'bg-foreground' : 'bg-popover'
+        )}
+      />
+    )
   }
 
   return (
@@ -123,3 +138,11 @@ export function ButtonTooltip({
     </div>
   )
 }
+
+/**
+ * Tooltip
+ * Alias for ButtonTooltip (generic name for consumers).
+ */
+export const Tooltip = ButtonTooltip
+export type TooltipProps = ButtonTooltipProps
+

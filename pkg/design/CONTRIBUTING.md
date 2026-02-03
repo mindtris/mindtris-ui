@@ -15,7 +15,7 @@ This package is limited to:
 
 - Design tokens (colors, spacing, typography, motion)
 - Primitive components (Box, Stack, Text)
-- Reusable UI components (Button, Input, Modal, Table)
+- Reusable UI components (Button, Input, Dialog, Drawer, Table)
 - Generic layout primitives (Page, AppShell)
 - Visual states (loading, empty, error)
 - Animation and motion primitives

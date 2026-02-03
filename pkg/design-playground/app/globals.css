@@ -3,6 +3,9 @@
 /* Design system tokens (default theme + overrides) */
 @import '@mindtris/design-system/tokens';
 
+/* Tailwind v4 content sources (include design-system package) */
+@source "../../design/**/*.{ts,tsx}";
+
 @import 'tailwindcss';
 
 @plugin "@tailwindcss/forms" {

@@ -6,7 +6,7 @@ import { Menu, X, Moon, Sun, ChevronDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Logo } from '../ui'
 import { DropdownSwitch } from '../ui/dropdown'
-import { ButtonTooltip } from '../ui/button-tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { Transition } from '@headlessui/react'
 import { useTheme } from 'next-themes'
 import type { DropdownOption, SwitchOption } from '../ui/dropdown'
@@ -180,7 +180,7 @@ function ThemeToggleButton() {
     return (
       <button
         type="button"
-        className="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors shrink-0 cursor-pointer"
+        className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors shrink-0 cursor-pointer"
         aria-label="Toggle theme"
       >
         <Moon className="w-4 h-4" />
@@ -191,7 +191,7 @@ function ThemeToggleButton() {
   return (
     <button
       type="button"
-      className="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors shrink-0 cursor-pointer"
+      className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors shrink-0 cursor-pointer"
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
@@ -218,20 +218,23 @@ function DropdownSwitchWithTooltip({
   const [menuOpen, setMenuOpen] = React.useState(false)
 
   return (
-    <ButtonTooltip 
-      content={<div className="text-xs whitespace-nowrap">Theme</div>} 
-      position="bottom" 
-      bg="dark"
-      disabled={menuOpen}
-    >
-      <DropdownSwitch
-        options={options}
-        selectedId={selectedId}
-        onSelect={onSelect}
-        align={align}
-        onMenuStateChange={setMenuOpen}
-      />
-    </ButtonTooltip>
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger asChild>
+        <DropdownSwitch
+          options={options}
+          selectedId={selectedId}
+          onSelect={onSelect}
+          align={align}
+          onMenuStateChange={setMenuOpen}
+        />
+      </TooltipTrigger>
+      {/* Disable tooltip while dropdown menu is open */}
+      {!menuOpen ? (
+        <TooltipContent side="bottom" sideOffset={6}>
+          Theme
+        </TooltipContent>
+      ) : null}
+    </Tooltip>
   )
 }
 
@@ -300,7 +303,7 @@ export function Header({
 
           {/* Right of Logo: Theme Dropdown (Desktop) */}
           {switchOptions.length > 0 && selectedTheme && onThemeChange ? (
-            <div className="hidden md:block shrink-0 ml-4">
+            <div className="hidden sm:block shrink-0 ml-4">
               <DropdownSwitchWithTooltip
                 options={switchOptions}
                 selectedId={selectedTheme}
@@ -312,7 +315,7 @@ export function Header({
 
           {/* Center: Navigation Links/Dropdowns - Strictly Centered (Desktop) */}
           {links.length > 0 ? (
-            <nav className="hidden md:flex items-center gap-1.5 absolute left-1/2 -translate-x-1/2">
+            <nav className="hidden sm:flex items-center gap-1.5 absolute left-1/2 -translate-x-1/2">
               {links.map((link) => {
                 // If link has dropdown options, render as hover dropdown
                 if (link.options && link.options.length > 0) {
@@ -341,14 +344,21 @@ export function Header({
           {/* Right: Actions */}
           <div className="ml-auto flex items-center gap-2 min-w-0">
             {/* Theme Toggle */}
-            <ButtonTooltip content={<div className="text-xs whitespace-nowrap">Theme</div>} position="bottom" bg="dark">
-              <ThemeToggleButton />
-            </ButtonTooltip>
-            {rightSlot != null ? <div className="hidden md:block">{rightSlot}</div> : null}
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <span className="inline-flex">
+                  <ThemeToggleButton />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={6}>
+                Theme
+              </TooltipContent>
+            </Tooltip>
+            {rightSlot != null ? <div className="hidden sm:block">{rightSlot}</div> : null}
             {/* Mobile Menu Button */}
             <button
               type="button"
-              className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="sm:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
@@ -366,7 +376,7 @@ export function Header({
         <Transition
           show={mobileMenuOpen}
           as="div"
-          className="md:hidden border-t border-border bg-background"
+          className="sm:hidden border-t border-border bg-background"
           enter="transition ease-out duration-200"
           enterFrom="opacity-0 -translate-y-2"
           enterTo="opacity-100 translate-y-0"

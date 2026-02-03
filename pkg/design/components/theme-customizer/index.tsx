@@ -121,7 +121,7 @@ export function ThemeCustomizer({
             </div>
             <h2 className="text-lg font-semibold">Customizer</h2>
             <div className="ml-auto flex items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={handleReset} title="Reset">
+              <Button variant="ghost" size="sm" onClick={handleReset}>
                 Reset
               </Button>
               {!inline && (
@@ -129,8 +129,9 @@ export function ThemeCustomizer({
                   variant="ghost"
                   size="sm"
                   onClick={() => onOpenChange(false)}
-                  title="Close"
                   className="p-1.5"
+                  aria-label="Close"
+                  tooltip="Close"
                 >
                   <X className="w-4 h-4" />
                 </Button>

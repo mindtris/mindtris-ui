@@ -1,10 +1,12 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
+import React, { Suspense } from 'react'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { AppProvider } from '@mindtris/design-system'
 import PlaygroundShell from './playground-shell'
+import PlaygroundToaster from './playground-toaster'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,6 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" disableTransitionOnChange>
           <AppProvider>
             <PlaygroundShell>{children}</PlaygroundShell>
+            {/* Static export requires useSearchParams() to be under Suspense (CSR bailout). */}
+            <Suspense fallback={null}>
+              <PlaygroundToaster />
+            </Suspense>
           </AppProvider>
         </ThemeProvider>
       </body>

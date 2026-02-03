@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import {
   SectionHeader,
+  Button,
   colorThemes,
   useThemeManager,
 } from '@mindtris/design-system'
@@ -96,6 +97,18 @@ export default function PlaygroundShell({ children }: { children: React.ReactNod
           selectedTheme={selectedTheme}
           onThemeChange={handleThemeChange}
           links={headerLinks}
+          rightSlot={
+            <Button
+              variant="primary"
+              size="sm"
+              shape="pill"
+              className="h-8 px-4 py-0"
+              onClick={() => applyTheme('default', isDarkMode)}
+              tooltip="Reset theme to Default"
+            >
+              Reset theme
+            </Button>
+          }
         />
 
         <div className="flex-1 min-h-0">{children}</div>

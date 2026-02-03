@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '../../lib/utils'
+import { Skeleton as DSSkeleton } from './skeleton'
 
 interface LoadingSpinnerProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -47,28 +48,19 @@ export default function LoadingSpinner({
   )
 }
 
-interface SkeletonProps {
-  className?: string
-  lines?: number
-}
-
-export function Skeleton({ className, lines = 1 }: SkeletonProps) {
-  return (
-    <div className={cn('animate-pulse', className)}>
-      {Array.from({ length: lines }).map((_, i) => (
-        <div key={i} className="h-4 bg-muted rounded mb-2 last:mb-0" />
-      ))}
-    </div>
-  )
-}
-
 export function CardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn('bg-card rounded-lg p-6 shadow-sm', className)}>
-      <div className="animate-pulse space-y-4">
-        <div className="h-4 bg-muted rounded w-3/4" />
-        <div className="h-4 bg-muted rounded w-1/2" />
-        <div className="h-4 bg-muted rounded w-5/6" />
+    <div
+      data-slot="card-skeleton"
+      className={cn('rounded-xl border border-border bg-card p-4', className)}
+      aria-busy="true"
+    >
+      <DSSkeleton className="h-4 w-3/4" />
+      <DSSkeleton className="h-4 w-1/2 mt-2" tone="accent" />
+      <DSSkeleton className="mt-4 h-40 w-full" radius="lg" />
+      <div className="mt-4 flex items-center gap-2">
+        <DSSkeleton className="h-9 w-24" radius="md" />
+        <DSSkeleton className="h-9 w-20" radius="md" tone="accent" />
       </div>
     </div>
   )
@@ -76,25 +68,23 @@ export function CardSkeleton({ className }: { className?: string }) {
 
 export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
   return (
-    <div className="bg-card rounded-lg shadow-sm overflow-hidden">
-      <div className="animate-pulse">
-        <div className="bg-muted px-6 py-3 border-b border-border">
-          <div className="flex space-x-4">
-            {Array.from({ length: columns }).map((_, i) => (
-              <div key={i} className="h-4 bg-muted rounded flex-1" />
+    <div className="rounded-xl border border-border bg-card overflow-hidden" aria-busy="true">
+      <div className="px-6 py-3 border-b border-border">
+        <div className="flex gap-4">
+          {Array.from({ length: columns }).map((_, i) => (
+            <DSSkeleton key={i} className="h-4 flex-1" />
+          ))}
+        </div>
+      </div>
+      {Array.from({ length: rows }).map((_, rowIndex) => (
+        <div key={rowIndex} className="px-6 py-4 border-b border-border last:border-b-0">
+          <div className="flex gap-4">
+            {Array.from({ length: columns }).map((_, colIndex) => (
+              <DSSkeleton key={colIndex} className="h-4 flex-1" />
             ))}
           </div>
         </div>
-        {Array.from({ length: rows }).map((_, rowIndex) => (
-          <div key={rowIndex} className="px-6 py-4 border-b border-border last:border-b-0">
-            <div className="flex space-x-4">
-              {Array.from({ length: columns }).map((_, colIndex) => (
-                <div key={colIndex} className="h-4 bg-muted rounded flex-1" />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      ))}
     </div>
   )
 }

@@ -35,7 +35,6 @@ const componentNavItems: ComponentNavItem[] = [
   { id: 'dropdowns', label: 'Dropdown' },
   { id: 'form', label: 'Form' },
   { id: 'inputs', label: 'Input' },
-  { id: 'modal', label: 'Modal' },
   { id: 'pagination', label: 'Pagination' },
   { id: 'tabs', label: 'Tabs' },
   { id: 'tooltip', label: 'Tooltip' },

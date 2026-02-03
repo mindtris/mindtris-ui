@@ -1,143 +1,148 @@
-# Mindtris - Enterprise Dashboard Template
-A modern, enterprise-grade dashboard template built with Next.js 15, TypeScript, and Tailwind CSS. Mindtris provides a comprehensive admin interface with multiple modules including analytics, e-commerce, community features, and more.
+<p align="center">
+  <img src="pkg/design/assets/logos/mindtris-logo.svg" alt="Mindtris" height="64" />
+</p>
 
-## 🚀 Quick Start
+## Mindtris Design
+
+This repository is the single source of truth for Mindtris UI: tokens, themes, and reusable React components published as `@mindtris/design-system`.
+
+### Quick links
+
+- `pkg/design/README.md` (package usage notes)
+- `pkg/design/CONTRIBUTING.md` (component and token rules)
+
+## What lives here
+
+- `pkg/design/tokens`: semantic tokens and theme presets (CSS variables)
+- `pkg/design/theme`: theme engine for applying presets and imported themes at runtime
+- `pkg/design/components`: UI primitives and composable building blocks
+- `pkg/design/components/theme-customizer`: Theme Customizer UI (create/import themes)
+- `pkg/design-playground`: local Next.js playground app that consumes `@mindtris/design-system`
+- `references`: reference material and experiments (not published)
+
+## Packages
+
+- `@mindtris/design-system` (published): `pkg/design`
+- `@mindtris/design-playground` (workspace app): `pkg/design-playground`
+
+## Install in consumer apps (GitHub Packages)
+
+`@mindtris/design-system` publishes to GitHub Packages. You must authenticate to install.
+
+1) Add a project `.npmrc`:
+
+```ini
+@mindtris:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+2) Provide a GitHub Personal Access Token:
+
+- Required scopes: `read:packages` (and `repo` if the package is private)
+- Environment variable: `NODE_AUTH_TOKEN`
+
+PowerShell:
+
+```powershell
+$env:NODE_AUTH_TOKEN="YOUR_TOKEN"
+```
+
+bash/zsh:
 
 ```bash
-# Clone and install
-git clone <your-repo-url>
-cd mindtris-template
-pnpm install
-
-# Start development
-pnpm dev
+export NODE_AUTH_TOKEN="YOUR_TOKEN"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and you're ready to go!
+3) Install:
 
-## ✨ Features
-
-- 🚀 **Next.js 15** with App Router
-- 🎨 **Tailwind CSS 4** with custom design system
-- 📊 **Chart.js** integration for data visualization
-- 🌙 **Dark/Light mode** support
-- 📱 **Fully responsive** design
-- 🔧 **TypeScript** for type safety
-- 🎯 **Component library** with reusable UI components
-- 🔌 **API Client** with Axios integration
-- 🔄 **SWR** for state management and data fetching
-- 🔐 **Authentication** ready
-- 📈 **Enterprise features** built-in
-
-## 📚 Documentation
-
-- **[Developer Guide](./docs/README.md)** - Complete development guide
-- **[Changelog](./docs/CHANGELOG.md)** - Version history and roadmap
-
-## 🏗️ Project Structure
-
-```
-mindtris-template/
-├── app/                    # Next.js App Router
-│   ├── (auth)/            # Authentication pages
-│   ├── (default)/         # Main dashboard pages
-│   ├── api/               # API routes
-│   └── css/               # Global styles
-├── components/            # Reusable UI components
-│   ├── ui/               # Core UI components
-│   ├── charts/           # Chart components
-│   └── utils/            # Utility components
-├── lib/                  # Utilities and configurations
-│   ├── api/              # API client and services
-│   ├── hooks/            # Custom React hooks
-│   └── swr-config.ts     # SWR configuration
-├── public/               # Static assets
-└── docs/                 # Documentation
+```bash
+pnpm add @mindtris/design-system
 ```
 
-## 🔌 API Integration
+## Use tokens (required)
 
-The template includes a complete API client layer with SWR for state management:
+Import the token entrypoint once in your app’s root CSS:
 
-```typescript
-import { useUsers, useUserMutations } from '@/lib/hooks/use-swr'
+```css
+@import '@mindtris/design-system/tokens';
+```
 
-function UserList() {
-  const { data: users, error, isLoading } = useUsers({ page: 1, limit: 10 })
-  const { createUser, updateUser, deleteUser } = useUserMutations()
-  
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-  
+Use semantic utilities and variables (no component-level hex colors):
+
+- `bg-background text-foreground`
+- `bg-card text-card-foreground border-border`
+- `bg-primary text-primary-foreground`
+- `text-muted-foreground`
+
+## Use components
+
+```tsx
+import { Button, Card, CardContent, Input } from '@mindtris/design-system'
+
+export function Example() {
   return (
-    <div>
-      {users?.data?.map(user => (
-        <div key={user.id}>{user.name}</div>
-      ))}
-    </div>
+    <Card>
+      <CardContent>
+        <Input placeholder="Email" />
+        <Button>Continue</Button>
+      </CardContent>
+    </Card>
   )
 }
 ```
 
-## 🎨 Customization
+## Theming
 
-### Branding
-- Replace logo in `public/images/mindtris-logo.svg`
-- Update colors in `app/css/style.css`
-- Change company name throughout the codebase
+Themes are applied by setting token variables on the root element (typically `document.documentElement`). The design system includes:
 
-### API Configuration
-```bash
-cp env.example .env.local
-# Edit with your API endpoints
+- Presets (built-in themes)
+- Imported theme artifacts (from Theme Customizer exports)
+- Radius and layout overrides
+
+```tsx
+import { applyThemePreset, useThemeManager } from '@mindtris/design-system'
+
+export function ThemeBootstrap() {
+  const { isDarkMode } = useThemeManager()
+  applyThemePreset('mosaic', isDarkMode)
+  return null
+}
 ```
 
-## 🚀 Deployment
+For interactive theme editing and imports:
 
-### Vercel (Recommended)
-```bash
-pnpm add -g vercel
-vercel
+```tsx
+import { ThemeCustomizer } from '@mindtris/design-system'
+
+export function ThemeSettings() {
+  return <ThemeCustomizer />
+}
 ```
 
-### Docker
-```bash
-docker build -t mindtris .
-docker run -p 3000:3000 mindtris
-```
+## Repo development
 
-## 🛠️ Development
+Install dependencies at the repo root:
 
 ```bash
-# Development
-pnpm dev
-
-# Build
-pnpm build
-
-# Start production
-pnpm start
-
-# Lint
-pnpm lint
+pnpm install
 ```
 
-## 📖 Learn More
+Run the playground:
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [Chart.js](https://www.chartjs.org/docs/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-- [SWR Documentation](https://swr.vercel.app/)
+```bash
+pnpm -C pkg/design-playground dev
+```
 
-## 🤝 Contributing
+Type-check the package:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```bash
+pnpm -C pkg/design tsc --noEmit -p tsconfig.json
+```
 
+## Publishing
 
----
+Publishing is automated via `.github/workflows/publish-design-package.yml`.
+
+- Auto publish: pushes to `main` that change `pkg/design/**`
+- Manual publish: workflow dispatch supports `patch`, `minor`, `major` version bumps
 

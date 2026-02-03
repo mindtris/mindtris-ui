@@ -26,6 +26,7 @@ import { ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { createVariants } from '../../lib/variant-utils'
 import { usePrefersReducedMotion } from '../../hooks/use-prefers-reduced-motion'
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 
 export type ButtonVariant =
   | 'primary'
@@ -181,6 +182,7 @@ export function Button({
   tooltip,
   render,
   children,
+  title: titleProp,
   ...props
 }: ButtonProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -292,7 +294,8 @@ export function Button({
       ...(render.props as any),
       ...(props as any),
       className: computedClassName,
-      title: tooltip || (render.props as any)?.title,
+      // Avoid native tooltips when `tooltip` is provided.
+      title: tooltip ? undefined : titleProp ?? (render.props as any)?.title,
       'aria-busy': isLoading || undefined,
       'data-loading': isLoading ? 'true' : 'false',
       'data-disabled': isExplicitlyDisabled ? 'true' : 'false',
@@ -327,10 +330,21 @@ export function Button({
       renderProps['aria-label'] = children
     }
 
-    return React.cloneElement(render, renderProps)
+    const element = React.cloneElement(render, renderProps)
+
+    if (tooltip && !isDisabled) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>{element}</TooltipTrigger>
+          <TooltipContent sideOffset={6}>{tooltip}</TooltipContent>
+        </Tooltip>
+      )
+    }
+
+    return element
   }
 
-  return (
+  const buttonElement = (
     <button
       type={props.type ?? 'button'}
       className={computedClassName}
@@ -339,10 +353,21 @@ export function Button({
       data-loading={isLoading ? 'true' : 'false'}
       data-disabled={isExplicitlyDisabled ? 'true' : 'false'}
       aria-label={isIconOnly && typeof children === 'string' ? children : undefined}
-      title={tooltip || undefined}
+      title={tooltip ? undefined : titleProp}
       {...props}
     >
       {content}
     </button>
   )
+
+  if (tooltip && !isDisabled) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{buttonElement}</TooltipTrigger>
+        <TooltipContent sideOffset={6}>{tooltip}</TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return buttonElement
 }

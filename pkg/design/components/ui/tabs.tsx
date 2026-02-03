@@ -35,17 +35,20 @@ export function Tabs({
 }: TabsProps) {
   if (variant === 'container') {
     return (
-      <ul className={cn('flex flex-wrap -m-1', className)}>
+      <ul className={cn('inline-flex w-fit flex-wrap items-center gap-2', className)}>
         {items.map((item) => (
-          <li key={item.id} className="m-1">
+          <li key={item.id}>
             <button
               type="button"
               onClick={() => onValueChange(item.id)}
               className={cn(
-                'inline-flex items-center justify-center gap-1.5 text-sm font-medium leading-5 rounded-full px-3 py-1 border shadow-sm transition-colors',
+                // Pill tabs (Mindtris tokens)
+                'inline-flex items-center justify-center gap-2 text-sm font-medium leading-5 rounded-full px-4 py-2 border transition-colors',
+                // Icon normalization (shadcn-style)
+                "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
                 value === item.id
-                  ? 'border-transparent bg-primary text-primary-foreground'
-                  : 'border-border bg-card text-muted-foreground hover:border-border/80 hover:text-foreground'
+                  ? 'bg-primary text-primary-foreground border-transparent'
+                  : 'bg-card text-muted-foreground border-border hover:text-foreground hover:border-border/80'
               )}
             >
               {item.icon}
