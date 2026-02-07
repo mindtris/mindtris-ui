@@ -22,6 +22,7 @@ import { X } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from './button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './dialog'
+import { Separator } from './separator'
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -73,7 +74,7 @@ export function Modal({
         showCloseButton={false}
       >
         {(title || description || !hideClose) ? (
-          <DialogHeader className={cn("px-5 py-4 border-b border-border", headerClassName)}>
+          <DialogHeader className={cn("px-5 py-4", headerClassName)}>
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 {title ? (
@@ -94,10 +95,13 @@ export function Modal({
           </DialogHeader>
         ) : null}
 
+        {(title || description || !hideClose) ? <Separator /> : null}
+
         <div className={cn("px-5 py-4", bodyClassName)}>{children}</div>
 
+        {footer ? <Separator /> : null}
         {footer ? (
-          <div className={cn("px-5 py-4 border-t border-border", footerClassName)}>{footer}</div>
+          <div className={cn("px-5 py-4", footerClassName)}>{footer}</div>
         ) : null}
       </DialogContent>
     </Dialog>

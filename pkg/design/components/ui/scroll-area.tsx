@@ -9,28 +9,45 @@ export type ScrollAreaProps = React.ComponentPropsWithoutRef<typeof ScrollAreaPr
 export type ScrollAreaViewportProps = React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Viewport>
 export type ScrollBarProps = React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Scrollbar>
 
+function isHorizontalScrollBar(child: React.ReactNode): boolean {
+  return (
+    React.isValidElement(child) &&
+    child.type === ScrollBar &&
+    (child.props as { orientation?: string }).orientation === "horizontal"
+  )
+}
+
 /**
  * ScrollArea
- * Token-styled scroll container with Radix primitives.
+ * Token-styled scroll container with Radix primitives. Vertical scroll by default.
+ * Add <ScrollBar orientation="horizontal" /> as a child for horizontal scroll (shadcn-style composition).
  */
 export const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   ScrollAreaProps
->(({ className, children, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    data-slot="scroll-area"
-    className={cn("relative overflow-hidden", className)}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport data-slot="scroll-area-viewport" className="h-full w-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
-    <ScrollBar orientation="horizontal" />
-    <ScrollAreaPrimitive.Corner data-slot="scroll-area-corner" />
-  </ScrollAreaPrimitive.Root>
-))
+>(({ className, children, ...props }, ref) => {
+  const childList = React.Children.toArray(children)
+  const viewportChildren = childList.filter((c) => !isHorizontalScrollBar(c))
+  const horizontalBars = childList.filter((c) => isHorizontalScrollBar(c))
+  return (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      data-slot="scroll-area"
+      className={cn("relative overflow-hidden", className)}
+      {...props}
+    >
+      <ScrollAreaPrimitive.Viewport
+        data-slot="scroll-area-viewport"
+        className="h-full w-full rounded-[inherit]"
+      >
+        {viewportChildren}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar />
+      {horizontalBars}
+      <ScrollAreaPrimitive.Corner data-slot="scroll-area-corner" />
+    </ScrollAreaPrimitive.Root>
+  )
+})
 ScrollArea.displayName = "ScrollArea"
 
 export const ScrollBar = React.forwardRef<
@@ -53,7 +70,7 @@ export const ScrollBar = React.forwardRef<
     <ScrollAreaPrimitive.Thumb
       data-slot="scroll-area-thumb"
       className={cn(
-        "relative flex-1 rounded-full bg-muted-foreground/40 hover:bg-muted-foreground/55"
+        "relative flex-1 rounded-full bg-border hover:bg-muted-foreground/50"
       )}
     />
   </ScrollAreaPrimitive.Scrollbar>

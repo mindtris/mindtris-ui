@@ -16,7 +16,7 @@ import {
   useThemeManager,
   type ImportedTheme,
 } from '@mindtris/design-system'
-import { usePlayground } from './playground-shell'
+import { usePlayground } from '../playground-shell'
 
 type TabId = 'colors' | 'typography' | 'others'
 

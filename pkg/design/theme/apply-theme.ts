@@ -19,6 +19,8 @@ export function resetTheme(): void {
     'background', 'foreground', 'card', 'card-foreground', 'popover', 'popover-foreground',
     'primary', 'primary-foreground', 'secondary', 'secondary-foreground', 'muted', 'muted-foreground',
     'accent', 'accent-foreground', 'destructive', 'destructive-foreground', 'border', 'input',
+    // Field surface (inputs, textareas, etc.)
+    'field',
     'ring', 'radius',
     
     // Chart variables
@@ -51,6 +53,8 @@ export const THEME_VAR_KEYS: readonly string[] = [
   'background', 'foreground', 'card', 'card-foreground', 'popover', 'popover-foreground',
   'primary', 'primary-foreground', 'secondary', 'secondary-foreground', 'muted', 'muted-foreground',
   'accent', 'accent-foreground', 'destructive', 'destructive-foreground', 'border', 'input',
+  // Field surface (inputs, textareas, etc.)
+  'field',
   'ring', 'radius',
 
   // Chart variables

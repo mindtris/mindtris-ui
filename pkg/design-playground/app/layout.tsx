@@ -25,11 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-inter antialiased bg-background text-foreground">
         <ThemeProvider attribute="class" disableTransitionOnChange>
           <AppProvider>
-            <PlaygroundShell>{children}</PlaygroundShell>
-            {/* Static export requires useSearchParams() to be under Suspense (CSR bailout). */}
-            <Suspense fallback={null}>
-              <PlaygroundToaster />
-            </Suspense>
+            {children}
           </AppProvider>
         </ThemeProvider>
       </body>

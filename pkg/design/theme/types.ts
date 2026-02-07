@@ -10,6 +10,8 @@ export type ThemeStyleProps = {
   "card-foreground": string;
   popover: string;
   "popover-foreground": string;
+  /** Control surface (inputs, textareas, etc.). Optional for older presets/themes. */
+  field?: string;
   primary: string;
   "primary-foreground": string;
   secondary: string;

@@ -9,6 +9,8 @@
   --foreground: #0a0a0a;
   --card: #ffffff;
   --card-foreground: #0a0a0a;
+  /* Control surface (inputs, textareas, etc.) */
+  --field: #ffffff;
   --popover: #ffffff;
   --popover-foreground: #0a0a0a;
   --primary: #171717;
@@ -44,6 +46,8 @@
   --foreground: #fafafa;
   --card: #171717;
   --card-foreground: #fafafa;
+  /* Control surface (inputs, textareas, etc.) */
+  --field: #171717;
   --popover: #262626;
   --popover-foreground: #fafafa;
   --primary: #e5e5e5;

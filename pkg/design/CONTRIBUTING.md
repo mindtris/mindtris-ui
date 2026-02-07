@@ -68,6 +68,7 @@ This package **must not** include:
 - Hardcoded values for colors, spacing, typography, or motion are prohibited.  
 - Animations must use predefined motion tokens.  
 - Application-specific CSS overrides are not allowed.
+- **Labels and UI copy:** Use sentence case (capitalize only the first letter), e.g. "Full name" not "Full Name". Exceptions: proper nouns, acronyms (e.g. "API key", "URL").
 
 ---
 

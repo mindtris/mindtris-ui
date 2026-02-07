@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { Palette, Shapes, LayoutGrid, BarChart3, MoreHorizontal } from 'lucide-react'
 
 import {
   SectionHeader,
@@ -65,21 +66,15 @@ export default function PlaygroundShell({ children }: { children: React.ReactNod
 
   const headerLinks = React.useMemo(
     () => [
-      { href: '/', label: 'Theme' },
+      { href: '/?tab=colors', label: 'Theme', icon: <Palette className="h-4 w-4" aria-hidden /> },
       {
-        href: '/components',
+        href: '/components?tab=accordion',
         label: 'Components',
-        options: [
-          { value: 'buttons', label: 'Buttons' },
-          { value: 'inputs', label: 'Inputs' },
-          { value: 'dropdowns', label: 'Dropdowns' },
-          { value: 'tabs', label: 'Tabs' },
-          { value: 'cards', label: 'Cards' },
-        ] as const,
+        icon: <LayoutGrid className="h-4 w-4" aria-hidden />,
       },
-      { href: '/blocks', label: 'Blocks' },
-      { href: '/charts', label: 'Charts' },
-      { href: '/more', label: 'More' },
+      { href: '/blocks?tab=cta', label: 'Blocks', icon: <Shapes className="h-4 w-4" aria-hidden /> },
+      { href: '/charts?tab=bar', label: 'Charts', icon: <BarChart3 className="h-4 w-4" aria-hidden /> },
+      { href: '/more?tab=icons', label: 'More', icon: <MoreHorizontal className="h-4 w-4" aria-hidden /> },
     ],
     [],
   )

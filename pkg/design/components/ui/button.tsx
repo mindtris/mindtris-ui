@@ -100,7 +100,7 @@ const buttonVariants = createVariants({
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
       secondary: 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/90',
       tertiary: 'bg-card border-border hover:bg-card/95 text-primary',
-      outline: 'bg-card border border-border text-foreground hover:bg-muted',
+      outline: 'bg-card border border-border text-foreground shadow-none hover:bg-muted',
       'outline-strong': 'bg-card border border-primary text-foreground hover:bg-muted',
       ghost: 'bg-transparent border-0 shadow-none text-foreground hover:bg-muted',
       link: 'bg-transparent border-0 shadow-none text-primary underline-offset-4 hover:underline',

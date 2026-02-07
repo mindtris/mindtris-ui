@@ -1,43 +1,51 @@
 /**
- * Mindtris Simplifi — Deel-inspired
- * Light background: #f7f5f2
+ * Mindtris Simplifi
+ * Light background: #ffffff
  * Primary buttons: #1b1b1b (gray/near-black)
- * Violet used as accent/highlight: #c4b1f9 / #a98df6
+ * Muted/hover surface: #dedede
+ * Purple accent scale (light → dark):
+ *   #F4EFFA #C8B1E4 #9B72CF #532B88 #2F184B
  */
 
 :root {
+  /* Canvas */
   --background: #f7f5f2;
   --foreground: #1b1b1b;
   --card: #ffffff;
   --card-foreground: #1b1b1b;
+  /* Control surface */
+  --field: #ffffff;
   --popover: #ffffff;
   --popover-foreground: #1b1b1b;
   --primary: #1b1b1b;
   --primary-foreground: #ffffff;
   --secondary: #dedede;
   --secondary-foreground: #1b1b1b;
+  /* Used for subtle surfaces + hover backgrounds (e.g. header menu hover). */
   --muted: #dedede;
   --muted-foreground: #616161;
-  --accent: #c4b1f9;
-  --accent-foreground: #1b1b1b;
+  /* Accent is a subtle highlight surface (selection, focus backgrounds). */
+  --accent: #f4effa;
+  --accent-foreground: #2f184b;
   --destructive: #ea4335;
   --destructive-foreground: #ffffff;
   --border: #dedede;
   --input: #dedede;
-  --ring: #1b1b1b;
+  /* Focus ring uses the accent scale (not primary). */
+  --ring: #9b72cf;
   --chart-1: #4285f4;
   --chart-2: #34a853;
   --chart-3: #fbbc04;
   --chart-4: #ea4335;
-  --chart-5: #a98df6;
+  --chart-5: #532b88;
   --sidebar: #ffffff;
   --sidebar-foreground: #1b1b1b;
   --sidebar-primary: #1b1b1b;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #c4b1f9;
-  --sidebar-accent-foreground: #1b1b1b;
+  --sidebar-accent: #f4effa;
+  --sidebar-accent-foreground: #2f184b;
   --sidebar-border: #dedede;
-  --sidebar-ring: #1b1b1b;
+  --sidebar-ring: #c8b1e4;
 }
 
 .dark {
@@ -45,6 +53,7 @@
   --foreground: #ffffff;
   --card: #000000;
   --card-foreground: #ffffff;
+  --field: #000000;
   --popover: #000000;
   --popover-foreground: #ffffff;
   --primary: #dedede;
@@ -53,24 +62,24 @@
   --secondary-foreground: #ffffff;
   --muted: #616161;
   --muted-foreground: #dedede;
-  --accent: #a98df6;
-  --accent-foreground: #1b1b1b;
+  --accent: #2f184b;
+  --accent-foreground: #f4effa;
   --destructive: #ea4335;
   --destructive-foreground: #ffffff;
   --border: #616161;
   --input: #616161;
-  --ring: #dedede;
+  --ring: #c8b1e4;
   --chart-1: #4285f4;
   --chart-2: #34a853;
   --chart-3: #fbbc04;
   --chart-4: #ea4335;
-  --chart-5: #a98df6;
+  --chart-5: #9b72cf;
   --sidebar: #1b1b1b;
   --sidebar-foreground: #ffffff;
   --sidebar-primary: #dedede;
   --sidebar-primary-foreground: #1b1b1b;
-  --sidebar-accent: #616161;
-  --sidebar-accent-foreground: #ffffff;
+  --sidebar-accent: #532b88;
+  --sidebar-accent-foreground: #f4effa;
   --sidebar-border: #616161;
-  --sidebar-ring: #dedede;
+  --sidebar-ring: #c8b1e4;
 }

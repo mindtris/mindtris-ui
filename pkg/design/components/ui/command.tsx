@@ -34,7 +34,7 @@ export const Command = React.forwardRef<
     ref={ref}
     data-slot="command"
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-xl bg-card text-card-foreground",
+      "flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground",
       className
     )}
     {...props}
@@ -82,7 +82,7 @@ export const CommandInput = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     data-slot="command-input-wrapper"
-    className="flex h-9 items-center gap-2 border-b border-border px-3"
+    className="flex h-9 items-center gap-2 border-b border-border bg-muted/30 px-3 rounded-t-lg"
   >
     <Search className="h-4 w-4 text-muted-foreground" aria-hidden />
     <CommandPrimitive.Input
@@ -151,7 +151,7 @@ export const CommandSeparator = React.forwardRef<
   <CommandPrimitive.Separator
     ref={ref}
     data-slot="command-separator"
-    className={cn("-mx-1 h-px bg-border", className)}
+    className={cn("-mx-1 h-px min-h-0 max-h-px shrink-0 bg-border/90", className)}
     {...props}
   />
 ))
@@ -165,9 +165,8 @@ export const CommandItem = React.forwardRef<
     ref={ref}
     data-slot="command-item"
     className={cn(
-      "relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-2 text-sm outline-none",
-      // cmdk sets data-selected, but we also support aria-selected for resilience
-      "data-[selected=true]:bg-muted data-[selected=true]:text-foreground aria-selected:bg-muted aria-selected:text-foreground",
+      "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none",
+      "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground aria-selected:bg-accent aria-selected:text-accent-foreground",
       "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       "[&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:h-4 [&_svg:not([class*='size-'])]:w-4",
       className

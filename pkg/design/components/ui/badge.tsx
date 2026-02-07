@@ -28,24 +28,36 @@ import * as React from 'react'
 import { cn } from '../../lib/utils'
 import { createVariants } from '../../lib/variant-utils'
 
-export type BadgeVariant = 'accent' | 'secondary' | 'muted' | 'outline' | 'destructive' | 'inverse'
+export type BadgeVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'accent'
+  | 'muted'
+  | 'outline'
+  | 'ghost'
+  | 'destructive'
+  | 'inverse'
 export type BadgeSize = 'xs' | 'sm' | 'md'
 
 const badgeVariants = createVariants({
-  base: 'inline-flex items-center font-medium whitespace-nowrap select-none',
+  base: 'inline-flex items-center font-medium whitespace-nowrap select-none rounded-full',
   variants: {
     variant: {
-      accent: 'bg-accent text-accent-foreground',
+      primary: 'bg-primary text-primary-foreground',
       secondary: 'bg-secondary text-secondary-foreground border border-border',
+      tertiary: 'bg-card border border-border text-primary',
+      accent: 'bg-accent text-accent-foreground',
       muted: 'bg-muted text-muted-foreground',
       outline: 'bg-transparent text-foreground border border-border',
+      ghost: 'bg-transparent text-muted-foreground',
       destructive: 'bg-destructive/15 text-destructive border border-destructive/30',
-      inverse: 'bg-foreground/80 text-background border border-border/60',
+      inverse: 'bg-foreground text-background',
     },
     size: {
-      xs: 'text-xs px-2.5 py-1 rounded-full',
-      sm: 'text-xs px-2.5 py-1 rounded-full',
-      md: 'text-sm px-2.5 py-1 rounded-full',
+      xs: 'text-xs px-2.5 py-0.5',
+      sm: 'text-xs px-2.5 py-1',
+      md: 'text-sm px-3 py-1',
     },
   },
   defaultVariants: { variant: 'muted', size: 'sm' },
@@ -55,13 +67,15 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant
   size?: BadgeSize
   leadingIcon?: React.ReactNode
+  trailingIcon?: React.ReactNode
 }
 
-export function Badge({ variant = 'muted', size = 'sm', leadingIcon, className, children, ...props }: BadgeProps) {
+export function Badge({ variant = 'muted', size = 'sm', leadingIcon, trailingIcon, className, children, ...props }: BadgeProps) {
   return (
     <span className={cn(badgeVariants({ variant, size }), className)} {...props}>
-      {leadingIcon ? <span className="mr-1 shrink-0">{leadingIcon}</span> : null}
+      {leadingIcon ? <span className="mr-1 shrink-0 [&_svg]:size-3.5" aria-hidden="true">{leadingIcon}</span> : null}
       <span>{children}</span>
+      {trailingIcon ? <span className="ml-1 shrink-0 [&_svg]:size-3.5" aria-hidden="true">{trailingIcon}</span> : null}
     </span>
   )
 }

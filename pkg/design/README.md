@@ -36,7 +36,7 @@ registry=https://npm.pkg.github.com
 # react usage (UI + theme engine)
 # -----------------------------------------------------------------------------
 # import what you need:
-#   import { Button, Input, ThemeCustomizer, useThemeManager } from '@mindtris/design-system'
+#   import { Button, Input, Label, DatePicker, DatePickerRange, Calendar, ThemeCustomizer, useThemeManager } from '@mindtris/design-system'
 #
 # theme apply (runtime; sets CSS vars on <html>):
 #   const { applyTheme, applyImportedTheme, applyRadius, isDarkMode } = useThemeManager()
@@ -58,6 +58,10 @@ registry=https://npm.pkg.github.com
 # styling:
 #   - token-only colors (NO tailwind palette like bg-gray-900, NO hex in components)
 #   - prefer semantic classes: bg-card, text-foreground, border-border, ...
+#
+# labels and copy:
+#   - sentence case: capitalize only the first letter (e.g. "Full name", not "Full Name")
+#   - exception: proper nouns, acronyms (e.g. "API key", "URL")
 #
 # layouts:
 #   - components like Sidebar/Header are chrome/slots only; apps provide routes + items

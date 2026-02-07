@@ -10,10 +10,12 @@
 
 import * as React from 'react'
 import Image from 'next/image'
+import { CircleCheck, ChevronDown, X } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
+import { Checkbox } from './checkbox'
 
 export type DropdownAlign = 'start' | 'center' | 'end'
 
@@ -23,9 +25,11 @@ export type DropdownOption<T extends string = string> = {
   leadingIcon?: React.ReactNode
 }
 
+export type DropdownSelectOptionVariant = 'checkmark' | 'checkbox'
+
 /**
  * Variant: "classic" (select-like)
- * Used for: navbar preset selector, full-width selects, etc.
+ * Used for: navbar preset selector, full-width selects, filter pills, etc.
  */
 export interface DropdownSelectProps<T extends string = string> {
   value: T
@@ -39,23 +43,19 @@ export interface DropdownSelectProps<T extends string = string> {
   align?: DropdownAlign
   /** Match "full width" dropdown behavior */
   fullWidth?: boolean
+  /** Option list variant: checkmark icon or checkbox */
+  optionVariant?: DropdownSelectOptionVariant
+  /** When > 0, shows active border and count badge */
+  selectedCount?: number
+  /** Filter mode: trigger always shows this label instead of selected option (for filters) */
+  filterLabel?: string
+  /** When optionVariant is checkbox, option with this value is rendered without checkbox (label/header row) */
+  labelOptionValue?: T
+  /** Show search input under label to filter options (when labelOptionValue is used) */
+  searchable?: boolean
+  /** Placeholder for search input when searchable */
+  searchPlaceholder?: string
   className?: string
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg className={cn('shrink-0 fill-current', className)} width="12" height="9" viewBox="0 0 12 9" aria-hidden>
-      <path d="M10.28.28L3.989 6.575 1.695 4.28A1 1 0 00.28 5.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28.28z" />
-    </svg>
-  )
-}
-
-function ChevronDownIcon({ className }: { className?: string }) {
-  return (
-    <svg className={cn('shrink-0 fill-current', className)} width="11" height="7" viewBox="0 0 11 7" aria-hidden>
-      <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
-    </svg>
-  )
 }
 
 export function DropdownSelect<T extends string = string>({
@@ -64,61 +64,80 @@ export function DropdownSelect<T extends string = string>({
   onChange,
   ariaLabel = 'Select option',
   buttonLeadingIcon,
-  align = 'end',
+  align = 'start',
   fullWidth = false,
+  optionVariant = 'checkmark',
+  selectedCount = 0,
+  filterLabel,
+  labelOptionValue,
+  searchable = false,
+  searchPlaceholder = 'Filter...',
   className,
 }: DropdownSelectProps<T>) {
   const selected = options.find((o) => o.value === value) ?? options[0]
+  const isActive = selectedCount > 0
+  const triggerLabel = filterLabel ?? selected?.label
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const labelOpt = labelOptionValue != null ? options.find((o) => o.value === labelOptionValue) : null
+  const valOpts = labelOptionValue != null ? options.filter((o) => o.value !== labelOptionValue) : options
+  const q = searchQuery.trim().toLowerCase()
+  const filtered = searchable && q ? valOpts.filter((o) => o.label.toLowerCase().includes(q)) : valOpts
+
+  const content = (
+    <div className="font-medium text-sm text-muted-foreground">
+      {optionVariant === 'checkbox' && labelOpt ? (
+        <>
+          <div
+            role="option"
+            aria-selected={value === labelOpt.value}
+            tabIndex={0}
+            onClick={() => onChange(labelOpt.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onChange(labelOpt.value) } }}
+            className="flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left transition-colors cursor-pointer min-h-[2.25rem]"
+          >
+            <span className="truncate font-medium text-foreground">{labelOpt.label}</span>
+            <button type="button" aria-label="Clear filter" onClick={(e) => { e.stopPropagation(); onChange(labelOpt.value) }} className="shrink-0 rounded p-0.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer">
+              <X className="h-4 w-4" aria-hidden />
+            </button>
+          </div>
+          {searchable ? (
+            <div className="mb-1 px-1">
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={searchPlaceholder} className="h-8 w-full rounded-md border border-input bg-field px-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-foreground/40" onKeyDown={(e) => e.stopPropagation()} />
+            </div>
+          ) : null}
+          {filtered.map((opt) => (
+            <div key={opt.value} role="option" aria-selected={opt.value === value} tabIndex={0} onClick={() => onChange(opt.value)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onChange(opt.value) } }} className={cn('flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left transition-colors cursor-pointer hover:bg-background hover:text-foreground', opt.value === value && 'text-primary')}>
+              <Checkbox checked={opt.value === value} className="pointer-events-none shrink-0" aria-hidden />
+              <span className="truncate">{opt.label}</span>
+            </div>
+          ))}
+        </>
+      ) : (
+        options.map((opt) => (
+          <button key={opt.value} type="button" onClick={() => onChange(opt.value)} className={cn('flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left transition-colors hover:bg-background hover:text-foreground', opt.value === value && 'text-primary')}>
+            <CircleCheck className={cn('h-4 w-4 shrink-0', opt.value === value ? 'text-foreground' : 'invisible')} aria-hidden />
+            <span className="truncate">{opt.label}</span>
+          </button>
+        ))
+      )}
+    </div>
+  )
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button
-          type="button"
-          aria-label={ariaLabel}
-          className={cn(
-            // Matches our Input/Select rhythm (height, border, ring)
-            'inline-flex h-9 items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors',
-            'text-muted-foreground hover:text-foreground hover:bg-muted',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-            fullWidth ? 'w-full min-w-0' : 'min-w-[11rem]',
-            className
-          )}
-        >
-          <span className="flex min-w-0 items-center gap-2">
+        <button type="button" aria-label={ariaLabel} className={cn('inline-flex h-9 items-center gap-1.5 rounded-md border bg-transparent px-3 py-1 text-sm transition-colors text-left', isActive ? 'border-foreground' : 'border-input text-muted-foreground hover:text-foreground hover:bg-background', 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring', 'data-[state=open]:ring-0 data-[state=open]:ring-offset-0', fullWidth ? 'w-full min-w-0' : 'min-w-0', className)}>
+          <span className="flex min-w-0 shrink items-center gap-1.5 truncate">
             {buttonLeadingIcon ? <span className="shrink-0 text-muted-foreground">{buttonLeadingIcon}</span> : null}
-            {selected?.leadingIcon ? <span className="shrink-0">{selected.leadingIcon}</span> : null}
-            <span className="truncate text-foreground">{selected?.label}</span>
+            {!filterLabel && selected?.leadingIcon ? <span className="shrink-0">{selected.leadingIcon}</span> : null}
+            <span className={cn('truncate', isActive && 'text-foreground')}>{triggerLabel}</span>
+            {isActive ? <span className="flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-medium text-background" aria-hidden>{selectedCount}</span> : null}
           </span>
-          <ChevronDownIcon className="text-muted-foreground" />
+          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
         </button>
       </PopoverTrigger>
-
-      <PopoverContent
-        align={align}
-        sideOffset={6}
-        className={cn('w-[min(18rem,calc(100vw-2rem))] p-1.5', fullWidth && 'w-[min(24rem,calc(100vw-2rem))]')}
-      >
-        <div className="font-medium text-sm text-muted-foreground">
-          {options.map((opt) => {
-            const isSelected = opt.value === value
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => onChange(opt.value)}
-                className={cn(
-                  'flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left transition-colors',
-                  'hover:bg-muted hover:text-foreground',
-                  isSelected && 'text-primary'
-                )}
-              >
-                <CheckIcon className={cn('text-primary', !isSelected && 'invisible')} />
-                <span className="truncate">{opt.label}</span>
-              </button>
-            )
-          })}
-        </div>
+      <PopoverContent align={align} sideOffset={6} className={cn('w-[min(18rem,calc(100vw-2rem))] p-1.5', fullWidth && 'w-[min(24rem,calc(100vw-2rem))]')}>
+        {content}
       </PopoverContent>
     </Popover>
   )

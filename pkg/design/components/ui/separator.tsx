@@ -35,9 +35,11 @@ export const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   SeparatorProps
 >(({ className, orientation = 'horizontal', decorative = true, ...props }, ref) => {
-  // Avoid relying on data-attribute variants for sizing in case attributes/config differ.
+  // Use 1px bg line for a thin, consistent divider in dialogs and lists.
   const orientationClasses =
-    orientation === 'vertical' ? 'h-full w-px' : 'h-px w-full'
+    orientation === 'vertical'
+      ? 'h-full w-px min-w-px bg-border'
+      : 'h-px min-h-px w-full bg-border'
 
   return (
     <SeparatorPrimitive.Root
@@ -46,7 +48,7 @@ export const Separator = React.forwardRef<
       decorative={decorative}
       orientation={orientation}
       className={cn(
-        'bg-border shrink-0',
+        'shrink-0',
         orientationClasses,
         className
       )}

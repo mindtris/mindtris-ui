@@ -22,9 +22,21 @@
 import * as React from 'react'
 import { X } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { createVariants } from '../../lib/variant-utils'
 
 export type ChipSize = 'sm' | 'md'
-export type ChipVariant = 'default' | 'outline'
+export type ChipVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'accent'
+  | 'muted'
+  | 'outline'
+  | 'ghost'
+  | 'destructive'
+  | 'inverse'
+  /** @deprecated Use "primary" instead. */
+  | 'default'
 
 export interface ChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   size?: ChipSize
@@ -41,9 +53,32 @@ export interface ChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonEle
   onSelectedChange?: (selected: boolean) => void
 }
 
+// Selected = same as Button variant (filled). Matches button-group pressed state.
+const chipSelectedVariants = createVariants({
+  base: 'border transition-colors',
+  variants: {
+    variant: {
+      primary: 'bg-primary text-primary-foreground border-transparent',
+      secondary: 'bg-secondary text-secondary-foreground border-border',
+      tertiary: 'bg-card border border-border text-primary',
+      accent: 'bg-accent text-accent-foreground border-transparent',
+      muted: 'bg-muted text-muted-foreground border-border',
+      outline: 'bg-transparent border border-border text-foreground',
+      ghost: 'bg-muted text-foreground border-transparent',
+      destructive: 'bg-destructive text-destructive-foreground border-transparent',
+      inverse: 'bg-foreground text-background border-transparent',
+    },
+  },
+  defaultVariants: { variant: 'primary' },
+})
+
+// Unselected = outline only (no fill), matching Button outline / button-group unpressed. Same for all variants.
+const chipUnselectedClass =
+  'bg-transparent border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
+
 export function Chip({
   size = 'md',
-  variant = 'default',
+  variant = 'primary',
   leadingIcon,
   onRemove,
   defaultSelected = false,
@@ -67,17 +102,11 @@ export function Chip({
 
   const sizeClass = size === 'sm' ? 'h-7 px-2.5 text-xs' : 'h-8 px-3 text-sm'
   const base =
-    'inline-flex items-center gap-1.5 rounded-full font-medium border shadow-sm transition-colors ' +
+    'inline-flex items-center gap-1.5 rounded-full font-medium ' +
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 disabled:cursor-not-allowed'
 
-  const variantClass =
-    variant === 'outline'
-      ? (isSelected
-        ? 'bg-muted border-border text-foreground'
-        : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:bg-muted/40')
-      : (isSelected
-        ? 'bg-primary text-primary-foreground border-transparent'
-        : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/90')
+  const effectiveVariant = variant === 'default' ? 'primary' : variant
+  const variantClass = isSelected ? chipSelectedVariants({ variant: effectiveVariant }) : chipUnselectedClass
 
   return (
     <button
