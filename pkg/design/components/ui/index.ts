@@ -45,7 +45,18 @@ export { Pagination } from './pagination'
 export type { PaginationProps, PaginationVariant } from './pagination'
 export { default as Card } from './card'
 export type { CardProps } from './card'
-export { DashboardCard, StatCard, SimpleCard, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card'
+export {
+  DashboardCard,
+  StatCard,
+  SimpleCard,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardImage,
+  CardContent,
+  CardFooter,
+} from './card'
 export { Input, Radio } from './input'
 export type { InputProps, RadioProps } from './input'
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot, InputOTPSingle } from './input-otp'
@@ -224,7 +235,21 @@ export type {
   DropdownSwitchProps,
 } from './dropdown'
 export { default as Logo } from './logo'
-export { SidebarLinkGroup, SidebarLink } from './sidebar'
+export {
+  SidebarLinkGroup,
+  SidebarLink,
+  SidebarMenuButton,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarInput,
+  SidebarSeparator,
+} from './sidebar'
 export { Popover, PopoverTrigger, PopoverAnchor, PopoverContent } from './popover'
 export type { PopoverProps, PopoverTriggerProps, PopoverAnchorProps, PopoverContentProps } from './popover'
 export {

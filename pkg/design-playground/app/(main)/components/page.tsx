@@ -34,9 +34,12 @@ import {
   CarouselPrevious,
   CarouselNext,
   Card,
+  CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
+  CardImage,
   CardTitle,
   Checkbox,
   Chip,
@@ -175,6 +178,20 @@ import {
   TabsTrigger,
   TabsContent,
   Separator,
+  Sidebar,
+  SidebarLink,
+  SidebarLinkGroup,
+  SidebarMenuButton,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarInput,
+  SidebarSeparator,
   Skeleton,
   CardSkeleton,
   TableSkeleton,
@@ -214,10 +231,11 @@ import {
   NavigationMenuTrigger,
   NavigationMenuLink,
   NavigationMenuViewport,
+  cn,
 } from '@mindtris/design-system'
 import { useForm } from 'react-hook-form'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
-import { Settings, Check, ChevronRight, Info, ChevronDown, Search, Eye, EyeOff, HelpCircle, Moon, TriangleAlert, UserRound, Plus, Minus, MoreHorizontal, Calendar, AudioLines, Save, BookmarkPlus, LogOut, Bell, CreditCard, Shield, Trash2, Tag, MessageSquareText, Mail, Mailbox, Copy, Loader2, RotateCcw, CircleCheck, Star, Binoculars, Grip, Code2, GitBranch, Users, Plug, Headphones, Building2, Workflow, UserRoundPlus, ShipWheel, BarChart2, Inbox, Cookie, Gift, Link2, QrCode, Expand, Download } from 'lucide-react'
+import { Settings, Check, ChevronRight, Info, ChevronDown, Search, Eye, EyeOff, HelpCircle, Moon, TriangleAlert, UserRound, Plus, Minus, MoreHorizontal, Calendar, AudioLines, Save, BookmarkPlus, LogOut, Bell, CreditCard, Shield, Trash2, Tag, MessageSquareText, Mail, Mailbox, Copy, Loader2, RotateCcw, CircleCheck, Star, Binoculars, Grip, Code2, GitBranch, Users, Plug, Headphones, Building2, Workflow, UserRoundPlus, ShipWheel, BarChart2, Inbox, Cookie, Gift, Link2, QrCode, Expand, Download, LayoutDashboard, FileText, PanelLeftClose, Home, CircleGauge, FolderKanban } from 'lucide-react'
 import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp'
 import type { DateRange } from 'react-day-picker'
 
@@ -271,6 +289,7 @@ const componentNavItems: ComponentNavItem[] = [
   { id: 'card-decorator', label: 'Card decorator' },
   { id: 'select', label: 'Select' },
   { id: 'separator', label: 'Separator' },
+  { id: 'sidebar', label: 'Sidebar' },
   { id: 'skeleton', label: 'Skeleton' },
   { id: 'sonner', label: 'Sonner' },
   { id: 'tooltip', label: 'Tooltip' },
@@ -329,6 +348,7 @@ function getComponentName(activeTab: string) {
     pagination: 'Pagination',
     select: 'Select',
     separator: 'Separator',
+    sidebar: 'Sidebar',
     skeleton: 'Skeleton',
     sonner: 'Sonner',
     tooltip: 'Tooltip',
@@ -450,6 +470,7 @@ function ComponentsPageContent() {
             {activeTab === 'card-decorator' ? <CardDecoratorShowcase /> : null}
             {activeTab === 'select' ? <SelectShowcase /> : null}
             {activeTab === 'separator' ? <SeparatorShowcase /> : null}
+            {activeTab === 'sidebar' ? <SidebarShowcase /> : null}
             {activeTab === 'skeleton' ? <SkeletonShowcase /> : null}
             {activeTab === 'sonner' ? <SonnerShowcase /> : null}
             {activeTab === 'tooltip' ? <TooltipShowcase /> : null}
@@ -462,7 +483,7 @@ function ComponentsPageContent() {
             {activeTab === 'native-select' ? <NativeSelectShowcase /> : null}
             {[
               'buttons', 'button-group', 'toggle-group', 'toggle', 'accordion', 'avatar', 'alert', 'alert-dialog', 'badge', 'breadcrumb', 'cards', 'carousel', 'combobox', 'context-menu', 'dropdowns',
-              'inputs', 'chip', 'color-input', 'input', 'input-otp', 'input-group', 'textarea', 'label', 'kbd', 'checkbox', 'radio-group', 'switch', 'command', 'scroll-area', 'resizable', 'dialog', 'drawer', 'empty', 'field', 'sheet', 'popover', 'datepicker', 'calendar', 'progress', 'slider', 'pagination', 'tabs', 'table', 'hover-card', 'card-decorator', 'select', 'native-select', 'separator', 'skeleton', 'sonner', 'tooltip', 'chart', 'collapsible', 'form-rhf', 'menubar', 'navigation-menu', 'typography', 'aspect-ratio',
+              'inputs', 'chip', 'color-input', 'input', 'input-otp', 'input-group', 'textarea', 'label', 'kbd', 'checkbox', 'radio-group', 'switch', 'command', 'scroll-area', 'resizable', 'dialog', 'drawer', 'empty', 'field', 'sheet', 'popover', 'datepicker', 'calendar', 'progress', 'slider', 'pagination', 'tabs', 'table', 'hover-card', 'card-decorator', 'select', 'native-select', 'separator', 'sidebar', 'skeleton', 'sonner', 'tooltip', 'chart', 'collapsible', 'form-rhf', 'menubar', 'navigation-menu', 'typography', 'aspect-ratio',
             ].includes(activeTab) ? null : (
               <div className="text-sm text-muted-foreground">
                 Showcase coming soon for: <span className="text-foreground font-medium">{getComponentName(activeTab)}</span>
@@ -1320,17 +1341,134 @@ function CardsShowcase() {
     <div className="space-y-8">
       <section>
         <h2 className="text-xl text-foreground font-semibold mb-4">Card</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Short supporting description using token colors.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground">
-              Card content goes here.
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Basic</h3>
+            <div className="text-sm text-muted-foreground mb-3">
+              Card with header, content, and footer. Shadow is opt-in; app decides whether to include it.
             </div>
-          </CardContent>
-        </Card>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <Card shadow="none" border>
+                <CardHeader>
+                  <CardTitle>Card title</CardTitle>
+                  <CardDescription>Short supporting description using token colors.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">Card content goes here.</p>
+                </CardContent>
+                <CardFooter>
+                  <p className="text-sm text-muted-foreground">Card footer</p>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Size</h3>
+            <div className="text-sm text-muted-foreground mb-3">
+              Use <span className="text-foreground font-medium">size=&quot;sm&quot;</span> for compact spacing.
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex flex-wrap gap-4">
+                <Card size="default" shadow="none" border className="flex-1 min-w-[200px]">
+                  <CardHeader>
+                    <CardTitle>Default size</CardTitle>
+                    <CardDescription>Standard padding and spacing.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">Content</p>
+                  </CardContent>
+                </Card>
+                <Card size="sm" shadow="none" border className="flex-1 min-w-[200px]">
+                  <CardHeader>
+                    <CardTitle>Small size</CardTitle>
+                    <CardDescription>Compact spacing.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">Content</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">CardAction</h3>
+            <div className="text-sm text-muted-foreground mb-3">
+              Place content in the top-right of the header (e.g. button, badge).
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <Card shadow="none" border>
+                <CardHeader>
+                  <CardTitle>Card with action</CardTitle>
+                  <CardDescription>Header includes an action in the top-right.</CardDescription>
+                  <CardAction>
+                    <Button variant="outline" size="sm">Action</Button>
+                  </CardAction>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">Content</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Image</h3>
+            <div className="text-sm text-muted-foreground mb-3">
+              Add CardImage before the header to create a card with a cover image.
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <Card shadow="none" border className="max-w-md overflow-hidden">
+                <CardImage>
+                  <div className="aspect-video bg-muted flex items-center justify-center text-muted-foreground text-sm">
+                    Image area
+                  </div>
+                </CardImage>
+                <CardHeader>
+                  <CardTitle>Featured</CardTitle>
+                  <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
+                  <CardAction>
+                    <Button variant="outline" size="sm">View</Button>
+                  </CardAction>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">Card content below the image.</p>
+                </CardContent>
+                <CardFooter>
+                  <Button>Action</Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Shadow</h3>
+            <div className="text-sm text-muted-foreground mb-3">
+              Token-driven shadows. App opts in via <span className="text-foreground font-medium">shadow</span> prop.
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex flex-wrap gap-6">
+                <Card shadow="sm" border className="flex-1 min-w-[160px]">
+                  <CardHeader>
+                    <CardTitle>shadow sm</CardTitle>
+                  </CardHeader>
+                </Card>
+                <Card shadow="md" border className="flex-1 min-w-[160px]">
+                  <CardHeader>
+                    <CardTitle>shadow md</CardTitle>
+                  </CardHeader>
+                </Card>
+                <Card shadow="lg" border className="flex-1 min-w-[160px]">
+                  <CardHeader>
+                    <CardTitle>shadow lg</CardTitle>
+                  </CardHeader>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   )
@@ -6433,6 +6571,186 @@ function SeparatorShowcase() {
                 <div className="text-sm text-muted-foreground">Acts as a real separator.</div>
                 <Separator decorative={false} className="mt-3" />
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+type SidebarView = 'labels' | 'icon-label' | 'icon-only' | 'with-search' | 'floating' | 'inset'
+
+function SidebarShowcase() {
+  const [open, setOpen] = React.useState(true)
+  const [view, setView] = React.useState<SidebarView>('icon-label')
+
+  const views: { id: SidebarView; label: string }[] = [
+    { id: 'labels', label: 'Labels only' },
+    { id: 'icon-label', label: 'Icon + label' },
+    { id: 'icon-only', label: 'Icon only' },
+    { id: 'with-search', label: 'With search' },
+    { id: 'floating', label: 'Floating' },
+    { id: 'inset', label: 'Inset' },
+  ]
+
+  return (
+    <div className="space-y-8">
+      <section>
+        <h2 className="text-xl text-foreground font-semibold mb-4">Sidebar</h2>
+
+        <div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">Variants</h3>
+          <p className="text-sm text-muted-foreground mb-3">
+            Use the controls to switch between sidebar views. Styling matches the Components nav and dropdown hover effects.
+          </p>
+          <div className="rounded-xl border border-border bg-card p-6">
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <ButtonGroup variant="secondary" withSeparator>
+                <ButtonGroupItem type="button" onClick={() => setOpen((o) => !o)}>
+                  Toggle sidebar
+                </ButtonGroupItem>
+                <ButtonGroupSeparator />
+                {views.map((v) => (
+                  <ButtonGroupItem
+                    key={v.id}
+                    type="button"
+                    variant={view === v.id ? 'primary' : undefined}
+                    aria-pressed={view === v.id}
+                    onClick={() => {
+                      setView(v.id)
+                      setOpen(true)
+                    }}
+                  >
+                    {v.label}
+                  </ButtonGroupItem>
+                ))}
+              </ButtonGroup>
+            </div>
+
+            <div
+              className={cn(
+                'flex min-h-[360px] w-full overflow-hidden rounded-lg border border-border',
+                view === 'floating' || view === 'inset' ? 'bg-muted/20 p-2' : 'bg-background'
+              )}
+            >
+              <div
+                className={cn(
+                  'shrink-0 transition-all duration-200 ease-out',
+                  !open && 'w-0 min-w-0 overflow-hidden'
+                )}
+              >
+                <Sidebar
+                open={open}
+                onOpenChange={setOpen}
+                variant={view === 'floating' || view === 'inset' ? view : 'sidebar'}
+                collapsible={view === 'icon-only' ? 'icon' : 'none'}
+                showBackdrop={false}
+                headerSlot={
+                  view === 'with-search' || view === 'floating' ? (
+                    <SidebarHeader>
+                      <div className="text-sm font-semibold text-foreground mb-2">App</div>
+                      <SidebarInput placeholder="Search..." />
+                    </SidebarHeader>
+                  ) : view !== 'icon-only' ? (
+                    <SidebarHeader>
+                      <div className="text-sm font-semibold text-foreground">App</div>
+                    </SidebarHeader>
+                  ) : (
+                    <SidebarHeader>
+                      <div className="flex justify-center py-2">
+                        <LayoutDashboard className="size-5 text-muted-foreground" aria-hidden />
+                      </div>
+                    </SidebarHeader>
+                  )
+                }
+                footerSlot={
+                  view !== 'icon-only' ? (
+                    <SidebarFooter>
+                      <div className="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground">
+                        <UserRound className="size-4 shrink-0" aria-hidden />
+                        <span className="truncate">Account</span>
+                      </div>
+                    </SidebarFooter>
+                  ) : null
+                }
+              >
+                <SidebarContent>
+                  <SidebarGroup>
+                    {view !== 'icon-only' && <SidebarGroupLabel>Main</SidebarGroupLabel>}
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {view === 'labels' ? (
+                          <>
+                            <SidebarMenuItem>
+                              <SidebarLink href="#" active>Dashboard</SidebarLink>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarLink href="#">Documents</SidebarLink>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarLink href="#">Team</SidebarLink>
+                            </SidebarMenuItem>
+                          </>
+                        ) : view === 'icon-only' ? (
+                          <>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<CircleGauge className="size-4" aria-hidden />} isActive aria-label="Dashboard" className="justify-center" />
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<FolderKanban className="size-4" aria-hidden />} aria-label="Documents" className="justify-center" />
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<UserRound className="size-4" aria-hidden />} aria-label="Team" className="justify-center" />
+                            </SidebarMenuItem>
+                          </>
+                        ) : (
+                          <>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<CircleGauge className="size-4" aria-hidden />} isActive>
+                                Dashboard
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<FolderKanban className="size-4" aria-hidden />}>
+                                Documents
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton leadingIcon={<UserRound className="size-4" aria-hidden />}>
+                                Team
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          </>
+                        )}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                  <>
+                    <SidebarSeparator />
+                    <SidebarGroup>
+                      {view !== 'icon-only' && <SidebarGroupLabel>Settings</SidebarGroupLabel>}
+                      <SidebarGroupContent>
+                        <SidebarMenu>
+                          <SidebarMenuItem>
+                            {view === 'icon-only' ? (
+                              <SidebarMenuButton leadingIcon={<Settings className="size-4" aria-hidden />} aria-label="Settings" className="justify-center" />
+                            ) : (
+                              <SidebarMenuButton leadingIcon={<Settings className="size-4" aria-hidden />}>
+                                Settings
+                              </SidebarMenuButton>
+                            )}
+                          </SidebarMenuItem>
+                        </SidebarMenu>
+                      </SidebarGroupContent>
+                    </SidebarGroup>
+                  </>
+                </SidebarContent>
+                </Sidebar>
+              </div>
+              <main className={cn('flex-1 p-6 text-sm text-muted-foreground', view === 'inset' && 'rounded-lg bg-background shadow-sm ml-0')}>
+                Main content
+              </main>
             </div>
           </div>
         </div>
