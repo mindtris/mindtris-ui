@@ -75,8 +75,8 @@ export type {
 } from './lib/component-api-patterns'
 export { createStandardProps } from './lib/component-api-patterns'
 
-// Contexts (layout/sidebar state)
-export { default as AppProvider, useAppProvider } from './contexts/app-provider'
+// Contexts (root-level re-export for reliable resolution from consumers' node_modules)
+export { AppProvider, useAppProvider } from './app-provider-primitives'
 
 // Hooks
 export {
