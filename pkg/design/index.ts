@@ -656,9 +656,8 @@ export {
 } from './lib/icon-constants'
 export type { IconSize } from './lib/icon-constants'
 
-// Phase C: design-system sections (root-level re-export for reliable resolution from consumers' node_modules)
-export { Header as SectionHeader } from './section-primitives.tsx'
-export type { HeaderProps as SectionHeaderProps, HeaderLink } from './section-primitives.tsx'
+// Phase C: design-system sections — SectionHeader omitted from main barrel when consumed as source (file: link)
+// to avoid "Can't resolve ./components/sections/header". Use built package or import from '@mindtris/design-system/sections' when that entry exists.
 
 // Phase C: design-system layouts (root-level re-export for reliable resolution from consumers' node_modules)
 export { Container, Page, Section, Grid, Stack } from './layout-primitives.tsx'
