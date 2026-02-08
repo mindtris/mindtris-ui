@@ -662,9 +662,9 @@ export {
 } from './lib/icon-constants'
 export type { IconSize } from './lib/icon-constants'
 
-// Phase C: design-system sections (composite blocks) — add section exports as built
-export { Header as SectionHeader } from './components/sections'
-export type { HeaderProps as SectionHeaderProps, HeaderLink } from './components/sections'
+// Phase C: design-system sections (root-level re-export for reliable resolution from consumers' node_modules)
+export { Header as SectionHeader } from './section-primitives'
+export type { HeaderProps as SectionHeaderProps, HeaderLink } from './section-primitives'
 
 // Phase C: design-system layouts (root-level re-export for reliable resolution from consumers' node_modules)
 export { Container, Page, Section, Grid, Stack } from './layout-primitives'
