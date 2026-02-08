@@ -125,15 +125,9 @@ export type {
   CustomThemeLayoutOverrides,
 } from './theme/types'
 
-// Phase B: ThemeCustomizer component
-export { ThemeCustomizer } from './components/theme-customizer'
-export { ThemeTab } from './components/theme-customizer/theme-tab'
-export { LayoutTab } from './components/theme-customizer/layout-tab'
-export { ImportModal } from './components/theme-customizer/import-modal'
-export { ColorsPanel } from './components/theme-customizer/colors-panel'
-export { ColorInput } from './components/theme-customizer/color-input'
-export { TypographyPanel } from './components/theme-customizer/typography-panel'
-export { OtherPanel } from './components/theme-customizer/other-panel'
+// Phase B: ThemeCustomizer (root-level re-export for reliable resolution from consumers' node_modules)
+export { ThemeCustomizer, ThemeTab, LayoutTab, ImportModal, ColorsPanel, ColorInput, TypographyPanel, OtherPanel } from './theme-customizer-primitives'
+export type { ThemeCustomizerSection } from './theme-customizer-primitives'
 
 // Phase C: design-system UI components (use in customizer and app)
 export {
