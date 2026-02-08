@@ -76,7 +76,7 @@ export type {
 export { createStandardProps } from './lib/component-api-patterns'
 
 // Contexts (root-level re-export for reliable resolution from consumers' node_modules)
-export { AppProvider, useAppProvider } from './app-provider-primitives'
+export { AppProvider, useAppProvider } from './app-provider-primitives.tsx'
 
 // Hooks
 export {
@@ -126,8 +126,8 @@ export type {
 } from './theme/types'
 
 // Phase B: ThemeCustomizer (root-level re-export for reliable resolution from consumers' node_modules)
-export { ThemeCustomizer, ThemeTab, LayoutTab, ImportModal, ColorsPanel, ColorInput, TypographyPanel, OtherPanel } from './theme-customizer-primitives'
-export type { ThemeCustomizerSection } from './theme-customizer-primitives'
+export { ThemeCustomizer, ThemeTab, LayoutTab, ImportModal, ColorsPanel, ColorInput, TypographyPanel, OtherPanel } from './theme-customizer-primitives.tsx'
+export type { ThemeCustomizerSection } from './theme-customizer-primitives.tsx'
 
 // Phase C: design-system UI components (root-level re-export for reliable resolution from consumers' node_modules)
 export {
@@ -407,7 +407,7 @@ export {
   Icon,
   createIcon,
   DropdownProfile,
-} from './ui-primitives'
+} from './ui-primitives.ts'
 export type {
   AccordionGroupProps,
   AccordionGroupItem,
@@ -646,7 +646,7 @@ export type {
   DatePickerProps,
   DatePickerRangeProps,
   ChartConfig,
-} from './ui-primitives'
+} from './ui-primitives.ts'
 
 // Icon constants
 export {
@@ -657,9 +657,9 @@ export {
 export type { IconSize } from './lib/icon-constants'
 
 // Phase C: design-system sections (root-level re-export for reliable resolution from consumers' node_modules)
-export { Header as SectionHeader } from './section-primitives'
-export type { HeaderProps as SectionHeaderProps, HeaderLink } from './section-primitives'
+export { Header as SectionHeader } from './section-primitives.tsx'
+export type { HeaderProps as SectionHeaderProps, HeaderLink } from './section-primitives.tsx'
 
 // Phase C: design-system layouts (root-level re-export for reliable resolution from consumers' node_modules)
-export { Container, Page, Section, Grid, Stack } from './layout-primitives'
-export type { ContainerProps, PageProps, SectionProps, GridProps, StackProps } from './layout-primitives'
+export { Container, Page, Section, Grid, Stack } from './layout-primitives.tsx'
+export type { ContainerProps, PageProps, SectionProps, GridProps, StackProps } from './layout-primitives.tsx'

@@ -8,6 +8,11 @@
 # install (GitHub Packages)
 pnpm add @mindtris/design-system
 
+# install via file link (local dev, e.g. dash)
+# In the app: pnpm add file:../mindtris-design/pkg/design
+# After any change in pkg/design, run `pnpm install` again in the app so node_modules sees new/updated files.
+# The main entry (index.ts) uses root-level re-exports (e.g. layout-primitives.tsx) with explicit .tsx/.ts extensions so Next/Turbopack can resolve them from node_modules. Long-term: build this package (tsup/unbuild) and consume the built output for reliable resolution.
+
 # auth (required for GitHub Packages)
 # - create a GitHub PAT with: read:packages (+ repo if private)
 # - set it as NODE_AUTH_TOKEN
