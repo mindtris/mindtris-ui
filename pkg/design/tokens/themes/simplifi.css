@@ -23,7 +23,7 @@
   --secondary-foreground: #1b1b1b;
   /* Used for subtle surfaces + hover backgrounds (e.g. header menu hover). */
   --muted: #dedede;
-  --muted-foreground: #616161;
+  --muted-foreground: #4a4a4a;
   /* Accent is a subtle highlight surface (selection, focus backgrounds). */
   --accent: #f4effa;
   --accent-foreground: #2f184b;
@@ -46,6 +46,13 @@
   --sidebar-accent-foreground: #2f184b;
   --sidebar-border: #dedede;
   --sidebar-ring: #c8b1e4;
+
+  /* Brand Violet Scale */
+  --violet-50: #F4EFFA;
+  --violet-100: #C8B1E4;
+  --violet-500: #9B72CF;
+  --violet-800: #532B88;
+  --violet-950: #2F184B;
 }
 
 .dark {

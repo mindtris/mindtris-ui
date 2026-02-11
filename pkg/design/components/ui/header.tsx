@@ -5,9 +5,12 @@ import { useAppProvider } from '../../contexts/app-provider'
 
 export default function Header({
   variant = 'default',
+  leftSlot,
   rightSlot,
 }: {
   variant?: 'default' | 'v2' | 'v3'
+  /** App-specific header content for the left side (logo, menu, etc.). */
+  leftSlot?: ReactNode
   /** App-specific header actions (search, notifications, theme toggle, profile). Pass from app. */
   rightSlot?: ReactNode
 }) {
@@ -19,7 +22,7 @@ export default function Header({
         <div className={`flex items-center justify-between h-16 ${variant === 'v2' || variant === 'v3' ? '' : 'lg:border-b border-border'}`}>
 
           {/* Header: Left side */}
-          <div className="flex">
+          <div className="flex items-center gap-4">
             <button
               className="text-muted-foreground hover:text-foreground lg:hidden"
               aria-controls="sidebar"
@@ -33,6 +36,7 @@ export default function Header({
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
+            {leftSlot}
           </div>
 
           {/* Header: Right side — app passes rightSlot (search, notifications, profile, etc.) */}

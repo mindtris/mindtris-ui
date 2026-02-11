@@ -1,6 +1,6 @@
 import { ClassValue } from 'clsx';
 import * as React$1 from 'react';
-import React__default, { ReactNode, Dispatch, SetStateAction, RefObject, ComponentType } from 'react';
+import React__default, { ReactNode, Dispatch, SetStateAction, RefObject, ButtonHTMLAttributes, ReactElement, HTMLAttributes, ComponentType } from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { OTPInput } from 'input-otp';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
@@ -521,7 +521,7 @@ interface AppContextProps {
     setSidebarExpanded: Dispatch<SetStateAction<boolean>>;
 }
 declare function AppProvider({ children, }: {
-    children: React.ReactNode;
+    children: ReactNode;
 }): React$1.JSX.Element;
 declare const useAppProvider: () => AppContextProps;
 
@@ -1097,10 +1097,10 @@ declare function handleColorChange(cssVar: string, value: string): void;
 
 declare function useThemeManager(): {
     theme: string;
-    setTheme: React__default.Dispatch<React__default.SetStateAction<string>>;
+    setTheme: React$1.Dispatch<React$1.SetStateAction<string>>;
     isDarkMode: boolean;
     brandColorsValues: Record<string, string>;
-    setBrandColorsValues: React__default.Dispatch<React__default.SetStateAction<Record<string, string>>>;
+    setBrandColorsValues: React$1.Dispatch<React$1.SetStateAction<Record<string, string>>>;
     currentThemeValue: string;
     customThemeValue: string;
     customThemeName: string;
@@ -1257,26 +1257,6 @@ interface OtherPanelProps {
 }
 declare function OtherPanel({ selectedRadius, setSelectedRadius, onImportClick, hideModeSection, hideLayoutSection, sidebarConfig, onSidebarConfigChange, }: OtherPanelProps): React__default.JSX.Element;
 
-/**
- * Button: Displays a button or a component that looks like a button.
- *
- * Design-system contract
- * - Scope: UI-only primitive (2-app rule). No domain terms, no API calls.
- * - Tokens-only: no Tailwind palette colors; use semantic token classes only.
- * - One source of truth: variants/sizes via `createVariants(...)`.
- * - A11y: icon-only requires `aria-label`; `isLoading` => `aria-busy` + disabled.
- * - Disabled: native `disabled` for `<button>`; emulate for `render` targets (`aria-disabled`, `tabIndex=-1`, prevent click).
- * - API: `size` supports text (`default|xs|sm|md|lg|xl`) + icon (`icon|icon-...`) sizes; `render` enables Link-as-button.
- * - Motion: spinner respects `prefers-reduced-motion`.
- *
- * @author: @mindtris-team
- * @version: 1.0.0
- * @since: 2026-01-31
- *
- * @example
- * <Button variant="primary" size="md" isLoading={true} fullWidth={true} leadingIcon={<Icon name="plus" />} trailingIcon={<Icon name="minus" />} iconOnly={true} tooltip="Add item" render={<Link href="/items">Items</Link>} />
- */
-
 type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'outline' | 'outline-strong' | 'ghost' | 'link' | 'menu' | 'icon' | 'icon-ghost' | 'danger' | 'danger-outline' | 'destructive' | 'destructive-outline';
 type ButtonTextSize = 'default' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type ButtonIconSize = 'icon' | 'icon-xs' | 'icon-sm' | 'icon-md' | 'icon-lg' | 'icon-xl';
@@ -1285,7 +1265,7 @@ type ButtonWeight = 'default' | 'strong';
 type ButtonAlign = 'left' | 'center' | 'right' | 'between';
 type ButtonMotion = 'none' | 'lift';
 type ButtonShape = 'rounded' | 'pill';
-interface ButtonProps extends React__default.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: ButtonSize;
     weight?: ButtonWeight;
@@ -1299,8 +1279,8 @@ interface ButtonProps extends React__default.ButtonHTMLAttributes<HTMLButtonElem
     fullWidth?: boolean;
     /** Adds a chevron and animates it on hover (like “Learn more →”). */
     arrowIcon?: boolean;
-    leadingIcon?: React__default.ReactNode;
-    trailingIcon?: React__default.ReactNode;
+    leadingIcon?: ReactNode;
+    trailingIcon?: ReactNode;
     /** Forces icon-only layout (square button). Also implied by `variant="icon"`. */
     iconOnly?: boolean;
     tooltip?: string;
@@ -1309,9 +1289,9 @@ interface ButtonProps extends React__default.ButtonHTMLAttributes<HTMLButtonElem
      *
      * Similar intent to coss's `render` prop.
      */
-    render?: React__default.ReactElement<any>;
+    render?: ReactElement<any>;
 }
-declare function Button({ className, variant, size, weight, align, shape, motion, isLoading, fullWidth, arrowIcon, leadingIcon, trailingIcon, iconOnly, disabled, tooltip, render, children, title: titleProp, ...props }: ButtonProps): React__default.JSX.Element;
+declare function Button({ className, variant, size, weight, align, shape, motion, isLoading, fullWidth, arrowIcon, leadingIcon, trailingIcon, iconOnly, disabled, tooltip, render, children, title: titleProp, ...props }: ButtonProps): React$1.JSX.Element;
 
 /**
  * ButtonGroup: Visually groups buttons into a segmented control.
@@ -2940,8 +2920,10 @@ interface DatePickerRangeProps {
  */
 declare function DatePickerRange({ value, onSelect, placeholder, disabled, className, calendarProps, }: DatePickerRangeProps): React$1.JSX.Element;
 
-declare function Header({ variant, rightSlot, }: {
+declare function Header({ variant, leftSlot, rightSlot, }: {
     variant?: 'default' | 'v2' | 'v3';
+    /** App-specific header content for the left side (logo, menu, etc.). */
+    leftSlot?: ReactNode;
     /** App-specific header actions (search, notifications, theme toggle, profile). Pass from app. */
     rightSlot?: ReactNode;
 }): React$1.JSX.Element;
@@ -3753,34 +3735,34 @@ declare function TooltipContent({ className, sideOffset, variant, children, ...p
  * Layout primitives (root-level so consuming bundlers can resolve without ./components/ paths).
  * Canonical source for Container, Page, Section, Grid, Stack.
  */
-interface ContainerProps extends React$1.HTMLAttributes<HTMLDivElement> {
+interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
     maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'none';
     padding?: 'none' | 'sm' | 'md' | 'lg';
     center?: boolean;
 }
 declare function Container({ children, maxWidth, padding, center, className, ...props }: ContainerProps): React$1.JSX.Element;
-interface PageProps extends React$1.HTMLAttributes<HTMLDivElement> {
+interface PageProps extends HTMLAttributes<HTMLDivElement> {
     title?: string;
     description?: string;
     maxWidth?: ContainerProps['maxWidth'];
     padding?: ContainerProps['padding'];
 }
 declare function Page({ children, title, description, maxWidth, padding, className, ...props }: PageProps): React$1.JSX.Element;
-interface SectionProps extends React$1.HTMLAttributes<HTMLElement> {
+interface SectionProps extends HTMLAttributes<HTMLElement> {
     title?: string;
     description?: string;
     maxWidth?: ContainerProps['maxWidth'];
     padding?: ContainerProps['padding'];
 }
 declare function Section({ children, title, description, maxWidth, padding, className, ...props }: SectionProps): React$1.JSX.Element;
-interface GridProps extends React$1.HTMLAttributes<HTMLDivElement> {
+interface GridProps extends HTMLAttributes<HTMLDivElement> {
     cols?: 1 | 2 | 3 | 4;
     colsSm?: 1 | 2 | 3 | 4 | 5 | 6;
     colsMd?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
     gap?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
 }
 declare function Grid({ children, cols, colsSm, colsMd, gap, className, ...props }: GridProps): React$1.JSX.Element;
-interface StackProps extends React$1.HTMLAttributes<HTMLDivElement> {
+interface StackProps extends HTMLAttributes<HTMLDivElement> {
     direction?: 'row' | 'col';
     align?: 'start' | 'center' | 'end' | 'stretch';
     justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';

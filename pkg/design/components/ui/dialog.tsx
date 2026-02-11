@@ -54,7 +54,7 @@ export function DialogOverlay({ className, ...props }: DialogOverlayProps) {
       data-slot="dialog-overlay"
       className={cn(
         "fixed inset-0 z-[80]",
-        "bg-foreground/20",
+        "bg-black/50",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
         className
@@ -76,12 +76,7 @@ export function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed left-1/2 top-1/2 z-[81] grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4",
-          "rounded-xl border border-border bg-card text-card-foreground shadow-xl",
-          "p-6 sm:max-w-lg",
-          "data-[state=open]:animate-in data-[state=closed]:animate-out",
-          "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
-          "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
+          "fixed left-[50%] top-[50%] z-[82] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-none bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl",
           className
         )}
         {...props}

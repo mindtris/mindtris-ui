@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTheme } from 'next-themes'
 import { baseColors } from './constants'
 import { colorThemes } from './theme-data'
@@ -28,21 +28,21 @@ type LastAppliedTheme =
 
 export function useThemeManager() {
   const { theme, setTheme } = useTheme()
-  const [brandColorsValues, setBrandColorsValues] = React.useState<Record<string, string>>({})
-  const [currentThemeValue, setCurrentThemeValue] = React.useState<string | null>(null)
-  const [error, setError] = React.useState<string | null>(null)
-  const [lastApplied, setLastApplied] = React.useState<LastAppliedTheme>(null)
-  const [customTheme, setCustomTheme] = React.useState<CustomThemeArtifactV1 | null>(null)
-  const [customThemeValue, setCustomThemeValue] = React.useState<string | null>(null)
+  const [brandColorsValues, setBrandColorsValues] = useState<Record<string, string>>({})
+  const [currentThemeValue, setCurrentThemeValue] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [lastApplied, setLastApplied] = useState<LastAppliedTheme>(null)
+  const [customTheme, setCustomTheme] = useState<CustomThemeArtifactV1 | null>(null)
+  const [customThemeValue, setCustomThemeValue] = useState<string | null>(null)
 
   // Simple, reliable theme detection - just follow the theme provider
-  const isDarkMode = React.useMemo(() => {
+  const isDarkMode = useMemo(() => {
     if (theme === "dark") return true
     if (theme === "light") return false
     return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
   }, [theme])
 
-  const updateBrandColorsFromTheme = React.useCallback((styles: Record<string, string>) => {
+  const updateBrandColorsFromTheme = useCallback((styles: Record<string, string>) => {
     const newValues: Record<string, string> = {}
     baseColors.forEach(color => {
       const cssVar = color.cssVar.replace('--', '')
@@ -54,7 +54,7 @@ export function useThemeManager() {
   }, [])
 
   // Load persisted theme on mount
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       const storedTheme = getStoredTheme()
       const storedCustom = getStoredCustomTheme()
@@ -66,7 +66,7 @@ export function useThemeManager() {
           setCustomThemeValue(`custom:${ct.name.toLowerCase().replace(/\s+/g, '-')}`)
         }
       }
-      
+
       if (storedTheme) {
         setCurrentThemeValue(storedTheme)
         // Apply theme if it's valid (preset or custom)
@@ -92,7 +92,7 @@ export function useThemeManager() {
   }, [isDarkMode, updateBrandColorsFromTheme])
 
   // Debounced theme application for rapid changes
-  const debouncedApplyTheme = React.useMemo(
+  const debouncedApplyTheme = useMemo(
     () => debounce((themeValue: string, darkMode: boolean) => {
       try {
         if (themeValue.startsWith('custom:')) {
@@ -134,11 +134,11 @@ export function useThemeManager() {
     [customTheme, isDarkMode, updateBrandColorsFromTheme]
   )
 
-  const applyTheme = React.useCallback((themeValue: string, darkMode: boolean) => {
+  const applyTheme = useCallback((themeValue: string, darkMode: boolean) => {
     debouncedApplyTheme(themeValue, darkMode)
   }, [debouncedApplyTheme])
 
-  const applyTweakcnTheme = React.useCallback((themePreset: ThemePreset, darkMode: boolean) => {
+  const applyTweakcnTheme = useCallback((themePreset: ThemePreset, darkMode: boolean) => {
     try {
       applyThemePreset(themePreset, darkMode)
       updateBrandColorsFromTheme(darkMode ? themePreset.styles.dark : themePreset.styles.light)
@@ -149,7 +149,7 @@ export function useThemeManager() {
     }
   }, [updateBrandColorsFromTheme])
 
-  const applyImportedThemeHandler = React.useCallback((themeData: ImportedTheme, darkMode: boolean) => {
+  const applyImportedThemeHandler = useCallback((themeData: ImportedTheme, darkMode: boolean) => {
     try {
       // Validate imported theme
       const validation = validateImportedTheme(themeData)
@@ -160,7 +160,7 @@ export function useThemeManager() {
 
       applyImportedTheme(themeData, darkMode)
       setLastApplied({ kind: 'imported', theme: themeData })
-      
+
       // Update brand colors values for the customizer UI
       const themeVars = darkMode ? themeData.dark : themeData.light
       const newBrandColors: Record<string, string> = {}
@@ -178,7 +178,7 @@ export function useThemeManager() {
     }
   }, [])
 
-  const getComputedVarsForMode = React.useCallback((dark: boolean): Record<string, string> => {
+  const getComputedVarsForMode = useCallback((dark: boolean): Record<string, string> => {
     if (typeof document === 'undefined') return {}
     const root = document.documentElement
     const hadDark = root.classList.contains('dark')
@@ -191,11 +191,11 @@ export function useThemeManager() {
         const v = styles.getPropertyValue(`--${k}`).trim()
         if (v) out[k] = v
       })
-      // Also capture tweakcn knobs
-      ;['hue-shift', 'saturation-mult', 'lightness-mult'].forEach((k) => {
-        const v = styles.getPropertyValue(`--${k}`).trim()
-        if (v) out[k] = v
-      })
+        // Also capture tweakcn knobs
+        ;['hue-shift', 'saturation-mult', 'lightness-mult'].forEach((k) => {
+          const v = styles.getPropertyValue(`--${k}`).trim()
+          if (v) out[k] = v
+        })
       return out
     } finally {
       if (hadDark) root.classList.add('dark')
@@ -203,7 +203,7 @@ export function useThemeManager() {
     }
   }, [])
 
-  const saveCustomThemeArtifactFromCurrent = React.useCallback((name = 'Custom', layout?: CustomThemeLayoutOverrides): CustomThemeArtifactV1 | null => {
+  const saveCustomThemeArtifactFromCurrent = useCallback((name = 'Custom', layout?: CustomThemeLayoutOverrides): CustomThemeArtifactV1 | null => {
     if (typeof document === 'undefined') return null
     if (!lastApplied) return null
 
@@ -289,7 +289,7 @@ export function useThemeManager() {
     return artifact
   }, [getComputedVarsForMode, lastApplied])
 
-  const importCustomThemeArtifact = React.useCallback((theme: CustomThemeArtifactV1) => {
+  const importCustomThemeArtifact = useCallback((theme: CustomThemeArtifactV1) => {
     try {
       const validation = validateCustomThemeArtifact(theme)
       if (!validation.isValid) {
@@ -314,7 +314,7 @@ export function useThemeManager() {
   }, [isDarkMode])
 
   // Debounced color change handler
-  const debouncedColorChange = React.useMemo(
+  const debouncedColorChange = useMemo(
     () => debounce((cssVar: string, value: string) => {
       try {
         applyColorChange(cssVar, value)
@@ -353,11 +353,11 @@ export function useThemeManager() {
     [isDarkMode, lastApplied, updateBrandColorsFromTheme]
   )
 
-  const handleColorChange = React.useCallback((cssVar: string, value: string) => {
+  const handleColorChange = useCallback((cssVar: string, value: string) => {
     debouncedColorChange(cssVar, value)
   }, [debouncedColorChange])
 
-  const handleRadiusChange = React.useCallback((radius: string) => {
+  const handleRadiusChange = useCallback((radius: string) => {
     try {
       applyRadius(radius)
       setError(null)

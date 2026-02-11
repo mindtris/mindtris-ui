@@ -21,7 +21,8 @@
 
 "use client"
 
-import React from 'react'
+import { ButtonHTMLAttributes, forwardRef, ReactElement, ReactNode, cloneElement } from "react"
+import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { createVariants } from '../../lib/variant-utils'
@@ -52,7 +53,7 @@ export type ButtonAlign = 'left' | 'center' | 'right' | 'between'
 export type ButtonMotion = 'none' | 'lift'
 export type ButtonShape = 'rounded' | 'pill'
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   size?: ButtonSize
   weight?: ButtonWeight
@@ -66,8 +67,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   fullWidth?: boolean
   /** Adds a chevron and animates it on hover (like “Learn more →”). */
   arrowIcon?: boolean
-  leadingIcon?: React.ReactNode
-  trailingIcon?: React.ReactNode
+  leadingIcon?: ReactNode
+  trailingIcon?: ReactNode
   /** Forces icon-only layout (square button). Also implied by `variant="icon"`. */
   iconOnly?: boolean
   tooltip?: string
@@ -76,7 +77,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    *
    * Similar intent to coss's `render` prop.
    */
-  render?: React.ReactElement<any>
+  render?: ReactElement<any>
 }
 
 /**
@@ -98,9 +99,9 @@ const buttonVariants = createVariants({
   variants: {
     variant: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      secondary: 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/90',
-      tertiary: 'bg-card border-border hover:bg-card/95 text-primary',
-      outline: 'bg-card border border-border text-foreground shadow-none hover:bg-muted',
+      secondary: 'bg-secondary text-secondary-foreground border-0 shadow-none hover:bg-background',
+      tertiary: 'bg-card border-border shadow-none hover:bg-card/95 text-primary',
+      outline: 'bg-card border-2 border-border text-foreground shadow-none hover:bg-muted',
       'outline-strong': 'bg-card border border-primary text-foreground hover:bg-muted',
       ghost: 'bg-transparent border-0 shadow-none text-foreground hover:bg-muted',
       link: 'bg-transparent border-0 shadow-none text-primary underline-offset-4 hover:underline',
@@ -115,7 +116,7 @@ const buttonVariants = createVariants({
       'destructive-outline': 'bg-card border border-border text-destructive hover:bg-muted',
     },
     weight: {
-      default: 'font-medium',
+      default: '',
       strong: 'font-semibold',
     },
     shape: {
@@ -247,8 +248,8 @@ export function Button({
     }),
     arrowIcon && 'group',
     motion === 'lift' &&
-      !prefersReducedMotion &&
-      'transition-transform duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:-translate-y-0.5 active:translate-y-0',
+    !prefersReducedMotion &&
+    'transition-transform duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:-translate-y-0.5 active:translate-y-0',
     className,
     (render?.props as any)?.className
   )
@@ -265,6 +266,7 @@ export function Button({
       {children != null && !isIconOnly && (
         <span
           className={cn(
+            'flex items-center gap-2 whitespace-nowrap',
             (isLoading || showLeadingIcon) && 'ml-2',
             showTrailingIcon && 'mr-2'
           )}
@@ -278,8 +280,8 @@ export function Button({
           className={cn(
             'shrink-0',
             arrowIcon &&
-              !prefersReducedMotion &&
-              'transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)] opacity-0 translate-x-[-2px] group-hover:opacity-100 group-hover:translate-x-0.5 group-focus-visible:opacity-100 group-focus-visible:translate-x-0.5'
+            !prefersReducedMotion &&
+            'transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)] opacity-0 translate-x-[-2px] group-hover:opacity-100 group-hover:translate-x-0.5 group-focus-visible:opacity-100 group-focus-visible:translate-x-0.5'
           )}
         >
           {resolvedTrailingIcon}
@@ -330,7 +332,7 @@ export function Button({
       renderProps['aria-label'] = children
     }
 
-    const element = React.cloneElement(render, renderProps)
+    const element = cloneElement(render, renderProps)
 
     if (tooltip && !isDisabled) {
       return (

@@ -1,6 +1,6 @@
 {
   "name": "@mindtris/ui",
-  "version": "0.1.1",
+  "version": "0.1.7",
   "private": false,
   "description": "Mindtris UI - Components, themes, and tokens",
   "main": "./dist/index.mjs",
@@ -68,7 +68,7 @@
     "react": "*",
     "react-day-picker": "*",
     "react-dom": "*",
-    "react-hook-form": "*",
+    "react-hook-form": "7.62.0",
     "react-resizable-panels": "*",
     "recharts": "*",
     "tailwind-merge": "*",

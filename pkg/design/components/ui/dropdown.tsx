@@ -215,10 +215,10 @@ export function ClassicDropdown<T extends string = string>({
         style={triggerWidth ? { width: `${triggerWidth}px`, maxWidth: 'calc(100vw - 2rem)' } : undefined}
         className={cn(
           'p-2',
-          fullWidth 
-            ? 'w-full min-w-0' 
-            : triggerWidth 
-              ? 'min-w-fit' 
+          fullWidth
+            ? 'w-full min-w-0'
+            : triggerWidth
+              ? 'min-w-fit'
               : 'min-w-fit max-w-[calc(100vw-2rem)]'
         )}
       >
@@ -385,7 +385,7 @@ export function DropdownMenuContent({ className, sideOffset = 6, ...props }: Dro
         className={cn(
           // Match PopoverContent + DropdownSelect surface
           'z-[9999] min-w-[11rem] max-w-[min(28rem,calc(100vw-2rem))] overflow-x-hidden overflow-y-auto',
-          'rounded-lg border border-border bg-card p-1.5 text-foreground shadow-lg outline-hidden',
+          'rounded-lg bg-card p-1.5 text-foreground shadow-lg outline-hidden',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
           'data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95',
@@ -692,7 +692,7 @@ export function DropdownSwitch({
 
   const menuOpenRef = React.useRef<boolean>(false)
   const callbackRef = React.useRef(onMenuStateChange)
-  
+
   // Keep callback ref up to date
   React.useEffect(() => {
     callbackRef.current = onMenuStateChange
@@ -704,14 +704,14 @@ export function DropdownSwitch({
         // Update ref synchronously (safe, doesn't trigger re-render)
         const prevOpen = menuOpenRef.current
         menuOpenRef.current = open
-        
+
         // Schedule callback for after render using queueMicrotask
         if (prevOpen !== open) {
           queueMicrotask(() => {
             callbackRef.current?.(open)
           })
         }
-        
+
         return (
           <>
             <MenuButton className="grow flex items-center truncate cursor-pointer">

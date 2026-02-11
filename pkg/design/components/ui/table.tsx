@@ -45,7 +45,7 @@ export function TableFooter({ className, ...props }: TableFooterProps) {
   return (
     <tfoot
       data-slot="table-footer"
-      className={cn("border-t border-border bg-muted/30 font-medium [&>tr]:last:border-b-0", className)}
+      className={cn("border-t border-border bg-muted/30 [&>tr]:last:border-b-0", className)}
       {...props}
     />
   )
@@ -70,7 +70,7 @@ export function TableHead({ className, ...props }: TableHeadProps) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-3 text-left align-middle text-sm font-medium text-muted-foreground whitespace-nowrap",
+        "h-10 px-3 text-left align-middle text-sm text-muted-foreground whitespace-nowrap",
         "[&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}

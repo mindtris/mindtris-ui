@@ -1,6 +1,4 @@
-'use client'
-
-import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
+import { createContext, Dispatch, SetStateAction, useContext, useState, type ReactNode } from 'react'
 
 interface AppContextProps {
   sidebarOpen: boolean
@@ -19,7 +17,7 @@ const AppContext = createContext<AppContextProps>({
 export default function AppProvider({
   children,
 }: {
-  children: React.ReactNode
+  children: ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false)

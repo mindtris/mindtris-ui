@@ -4,9 +4,9 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import {
   Controller,
-  FormProvider,
-  useFormContext,
-  useFormState,
+  FormProvider as RHFFormProvider,
+  useFormContext as useRHFFormContext,
+  useFormState as useRHFFormState,
   type ControllerProps,
   type FieldPath,
   type FieldValues,
@@ -15,7 +15,7 @@ import {
 import { cn } from '../../lib/utils'
 import { Label } from './label'
 
-const Form = FormProvider
+const Form = RHFFormProvider
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -46,8 +46,8 @@ const FormItemContext = React.createContext<FormItemContextValue | null>(null)
 function useFormField() {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext?.name })
+  const { getFieldState } = useRHFFormContext()
+  const formState = useRHFFormState({ name: fieldContext?.name })
   const fieldState = getFieldState(fieldContext?.name ?? ('' as FieldPath<FieldValues>), formState)
 
   if (!fieldContext) {

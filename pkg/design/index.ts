@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * @mindtris/design-system
  * Re-export components and theme APIs

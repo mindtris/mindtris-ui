@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from 'react'
+import { HTMLAttributes, ReactNode, forwardRef } from "react"
 import { cn } from './lib/utils'
 
 /**
@@ -8,7 +8,7 @@ import { cn } from './lib/utils'
  * Canonical source for Container, Page, Section, Grid, Stack.
  */
 
-export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'none'
   padding?: 'none' | 'sm' | 'md' | 'lg'
   center?: boolean
@@ -55,7 +55,7 @@ export function Container({
   )
 }
 
-export interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PageProps extends HTMLAttributes<HTMLDivElement> {
   title?: string
   description?: string
   maxWidth?: ContainerProps['maxWidth']
@@ -86,7 +86,7 @@ export function Page({
   )
 }
 
-export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
+export interface SectionProps extends HTMLAttributes<HTMLElement> {
   title?: string
   description?: string
   maxWidth?: ContainerProps['maxWidth']
@@ -117,7 +117,7 @@ export function Section({
   )
 }
 
-export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface GridProps extends HTMLAttributes<HTMLDivElement> {
   cols?: 1 | 2 | 3 | 4
   colsSm?: 1 | 2 | 3 | 4 | 5 | 6
   colsMd?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -162,7 +162,7 @@ export function Grid({
   )
 }
 
-export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StackProps extends HTMLAttributes<HTMLDivElement> {
   direction?: 'row' | 'col'
   align?: 'start' | 'center' | 'end' | 'stretch'
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
