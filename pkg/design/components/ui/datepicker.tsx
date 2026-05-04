@@ -103,7 +103,7 @@ export function DatePickerRange({
           shape="rounded"
           disabled={disabled}
           className={cn(
-            'w-full min-w-[15rem] justify-start text-left font-normal rounded-lg shadow-none border-input bg-field hover:border-border/80 focus-visible:ring-0 focus-visible:border-foreground/40',
+            'w-full min-w-[15rem] justify-start text-left font-normal rounded-lg shadow-none border-input bg-field focus-visible:ring-0 focus-visible:border-foreground/40',
             !value?.from && 'text-muted-foreground',
             className
           )}

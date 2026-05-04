@@ -89,10 +89,7 @@ export { RadioGroup, RadioGroupItem } from './radio-group'
 export type { RadioGroupProps, RadioGroupItemProps, RadioGroupSize } from './radio-group'
 export { Chip } from './chip'
 export type { ChipProps, ChipSize, ChipVariant } from './chip'
-export { Select } from './select'
-export type { SelectProps } from './select'
-export { NativeSelect } from './native-select'
-export type { NativeSelectProps, NativeSelectSize } from './native-select'
+// Consolidated exports moved to the bottom
 export { Field } from './field'
 export type { FieldProps } from './field'
 export { Empty } from './empty'
@@ -394,10 +391,8 @@ export type { DatePickerProps, DatePickerRangeProps } from './datepicker'
 export { default as Sidebar } from './sidebar'
 export { default as Header } from './header'
 export { Navbar } from './navbar'
-export { Tabs, TabsWithContainer } from './tabs'
-export type { TabsWithContainerItem, TabsItem, TabsVariant, TabsProps } from './tabs'
-export { TabsRoot, TabsList, TabsTrigger, TabsContent } from './tabs-radix'
-export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './tabs-radix'
+export { Tabs, TabsWithContainer, TabsRoot, TabsList, TabsTrigger, TabsContent } from './tabs'
+export type { TabsWithContainerItem, TabsItem, TabsVariant, TabsProps, TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './tabs'
 export { CollapsibleSection } from './collapsible-section'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './collapsible'
 export {
@@ -419,6 +414,8 @@ export {
   FormMessage,
   useFormField,
 } from './form'
+export { ErrorMessage } from './error-message'
+export type { ErrorMessageProps } from './error-message'
 export {
   NavigationMenu,
   NavigationMenuList,
@@ -461,24 +458,8 @@ export { Toggle, toggleVariants } from './toggle'
 export type { ToggleProps, ToggleSize, ToggleVariant } from './toggle'
 export { Toaster, toast, toastSemantic } from './sonner'
 export type { ToasterProps, ToasterVariant, ToastSemanticVariant } from './sonner'
-export {
-  SelectRoot,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-} from './select-radix'
-export type {
-  SelectRootProps,
-  SelectTriggerProps,
-  SelectContentProps,
-  SelectItemProps,
-  SelectLabelProps,
-  SelectSeparatorProps,
-} from './select-radix'
+export { Select, NativeSelect, SelectRoot, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectLabel, SelectSeparator } from './select'
+export type { SelectProps, NativeSelectProps, NativeSelectSize, SelectRootProps, SelectTriggerProps, SelectContentProps, SelectItemProps, SelectLabelProps, SelectSeparatorProps } from './select'
 
 // Simple tooltip API (used across playground)
 export { ButtonTooltip, Tooltip } from './button-tooltip'

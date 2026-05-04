@@ -353,6 +353,7 @@ export {
   FormDescription,
   FormMessage,
   useFormField,
+  ErrorMessage,
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,

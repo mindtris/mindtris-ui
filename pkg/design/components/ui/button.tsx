@@ -92,7 +92,7 @@ const buttonVariants = createVariants({
   base: [
     baseClasses,
     // Only apply "disabled" visuals when explicitly disabled (not when loading).
-    'data-[disabled=true]:border-border data-[disabled=true]:bg-card data-[disabled=true]:text-muted-foreground data-[disabled=true]:shadow-none',
+    'data-[disabled=true]:border-border data-[disabled=true]:opacity-50 data-[disabled=true]:shadow-none',
     // Loading should keep variant colors, but look inert.
     'data-[loading=true]:shadow-none data-[loading=true]:opacity-90',
   ],

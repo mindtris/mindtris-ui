@@ -27,6 +27,10 @@ export interface EmptyProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   action?: React.ReactNode
   /** Size variant. */
   size?: "sm" | "default" | "lg"
+  /** Optional override for title styling. */
+  titleClassName?: string
+  /** Optional override for description styling. */
+  descriptionClassName?: string
 }
 
 const sizeClasses = {
@@ -41,6 +45,8 @@ export function Empty({
   description,
   action,
   size = "default",
+  titleClassName,
+  descriptionClassName,
   className,
   children,
   ...props
@@ -66,12 +72,18 @@ export function Empty({
         </div>
       ) : null}
       {title ? (
-        <h3 data-slot="empty-title" className="text-base font-semibold text-foreground sm:text-lg">
+        <h3
+          data-slot="empty-title"
+          className={cn("text-base font-semibold text-foreground sm:text-lg", titleClassName)}
+        >
           {title}
         </h3>
       ) : null}
       {description ? (
-        <p data-slot="empty-description" className="max-w-sm text-sm text-muted-foreground">
+        <p
+          data-slot="empty-description"
+          className={cn("max-w-sm text-sm text-muted-foreground", descriptionClassName)}
+        >
           {description}
         </p>
       ) : null}

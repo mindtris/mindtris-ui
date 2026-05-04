@@ -1,6 +1,6 @@
 {
   "name": "@mindtris/ui",
-  "version": "0.1.7",
+  "version": "0.1.23",
   "private": false,
   "description": "Mindtris UI - Components, themes, and tokens",
   "main": "./dist/index.mjs",
@@ -21,7 +21,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && pnpm exec tailwindcss -i ./styles.entry.css -o ./dist/styles.css --minify",
     "prepublishOnly": "pnpm run build"
   },
   "exports": {
@@ -29,6 +29,7 @@
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.mts"
     },
+    "./styles": "./dist/styles.css",
     "./tokens": "./tokens/index.css",
     "./tokens/*": "./tokens/*.css"
   },
@@ -75,13 +76,15 @@
     "vaul": "*"
   },
   "devDependencies": {
-    "tsup": "^8.4.0",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-context-menu": "^2.2.16",
     "@radix-ui/react-menubar": "^1.1.16",
+    "@tailwindcss/cli": "^4.2.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
     "tailwind-merge": "^3.0.1",
+    "tailwindcss": "^4.0.3",
+    "tsup": "^8.4.0",
     "typescript": "^5.7.3"
   }
 }

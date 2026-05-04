@@ -192,7 +192,7 @@ export function ClassicDropdown<T extends string = string>({
             'font-medium text-sm inline-flex items-center justify-between border rounded-lg leading-5 transition-colors',
             'px-3.5 py-2.5',
             fullWidth ? 'w-full' : 'w-auto min-w-[8rem]',
-            'bg-card border-border hover:border-border/80',
+            'bg-card border-border',
             'text-muted-foreground hover:text-foreground',
             className
           )}
@@ -423,6 +423,7 @@ export function DropdownMenuItem({ className, inset, variant = 'default', ...pro
         // Match DropdownSelect option rows
         'flex w-full cursor-default select-none items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm font-medium outline-hidden transition-colors',
         'text-muted-foreground hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground',
+        'outline-none focus:outline-none focus-visible:outline-none ring-0 focus-visible:ring-0',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         'data-[inset]:pl-8',
         'data-[variant=destructive]:text-destructive data-[variant=destructive]:hover:bg-destructive/10 data-[variant=destructive]:focus:bg-destructive/10',

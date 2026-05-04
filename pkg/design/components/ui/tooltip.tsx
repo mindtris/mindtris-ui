@@ -81,13 +81,8 @@ function TooltipContent({
         {...props}
       >
         {children}
-        {/* Shadcn-style rotated-square arrow (no seam). */}
-        <TooltipPrimitive.Arrow
-          className={cn(
-            "z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]",
-            arrowVariantClasses[variant]
-          )}
-        />
+        {/* Arrow: Radix default triangle, colored per variant. */}
+        <TooltipPrimitive.Arrow width={10} height={5} className={cn("z-50", arrowVariantClasses[variant])} />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   )

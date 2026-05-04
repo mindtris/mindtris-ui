@@ -1988,38 +1988,6 @@ interface ChipProps extends Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>
 }
 declare function Chip({ size, variant, leadingIcon, onRemove, defaultSelected, selected, onSelectedChange, className, disabled, children, onClick, ...props }: ChipProps): React$1.JSX.Element;
 
-interface SelectProps extends React__default.SelectHTMLAttributes<HTMLSelectElement> {
-}
-/**
- * Select styled to match Input — single design system control for dropdowns.
- * Use across theme customizer (preset, fonts, etc.) for consistency.
- */
-declare const Select: React__default.ForwardRefExoticComponent<SelectProps & React__default.RefAttributes<HTMLSelectElement>>;
-
-/**
- * Native Select: Styled native <select> when Radix Select is not needed.
- *
- * Design-system contract:
- * - Scope: UI-only primitive. No domain copy.
- * - Tokens-only: semantic token classes only.
- * - Simple, accessible, token-driven. Use for basic selects without custom dropdown.
- *
- * @author: @mindtris-team
- * @version: 0.1.0
- * @since: 2026-02-01
- */
-
-type NativeSelectSize = "sm" | "default" | "lg";
-interface NativeSelectProps extends Omit<React$1.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
-    /** Size variant. */
-    size?: NativeSelectSize;
-    /** Whether the field has an error. */
-    invalid?: boolean;
-    /** Full width. */
-    fullWidth?: boolean;
-}
-declare const NativeSelect: React$1.ForwardRefExoticComponent<NativeSelectProps & React$1.RefAttributes<HTMLSelectElement>>;
-
 /**
  * Field: Standard form layout (label, control slot, description, error).
  *
@@ -2075,8 +2043,12 @@ interface EmptyProps extends Omit<React$1.HTMLAttributes<HTMLDivElement>, 'title
     action?: React$1.ReactNode;
     /** Size variant. */
     size?: "sm" | "default" | "lg";
+    /** Optional override for title styling. */
+    titleClassName?: string;
+    /** Optional override for description styling. */
+    descriptionClassName?: string;
 }
-declare function Empty({ icon, title, description, action, size, className, children, ...props }: EmptyProps): React$1.JSX.Element;
+declare function Empty({ icon, title, description, action, size, titleClassName, descriptionClassName, className, children, ...props }: EmptyProps): React$1.JSX.Element;
 
 /**
  * Carousel: Image/content slides using Embla Carousel.
@@ -2920,12 +2892,14 @@ interface DatePickerRangeProps {
  */
 declare function DatePickerRange({ value, onSelect, placeholder, disabled, className, calendarProps, }: DatePickerRangeProps): React$1.JSX.Element;
 
-declare function Header({ variant, leftSlot, rightSlot, }: {
+declare function Header({ variant, leftSlot, rightSlot, hideMobileMenuButton, }: {
     variant?: 'default' | 'v2' | 'v3';
     /** App-specific header content for the left side (logo, menu, etc.). */
     leftSlot?: ReactNode;
     /** App-specific header actions (search, notifications, theme toggle, profile). Pass from app. */
     rightSlot?: ReactNode;
+    /** When true, hides the hamburger menu button (e.g. for auth layout with full nav). */
+    hideMobileMenuButton?: boolean;
 }): React$1.JSX.Element;
 
 interface NavbarLink {
@@ -2941,45 +2915,16 @@ interface NavbarProps {
 }
 declare function Navbar({ brand, links, rightSlot, className }: NavbarProps): React__default.JSX.Element;
 
-type TabsVariant = 'simple' | 'underline' | 'container';
-interface TabsItem {
-    id: string;
-    label: string;
-    icon?: React__default.ReactNode;
-}
-interface TabsProps {
-    items: readonly TabsItem[];
-    value: string;
-    onValueChange: (id: string) => void;
-    variant?: TabsVariant;
-    className?: string;
-}
 /**
  * Tabs
- * Based on `app/(alternative)/components-library/tabs`.
- * - simple: bottom border container
- * - underline: active underline
- * - container: pill buttons (existing)
- */
-declare function Tabs({ items, value, onValueChange, variant, className, }: TabsProps): React__default.JSX.Element;
-type TabsWithContainerItem = TabsItem;
-declare function TabsWithContainer(props: Omit<TabsProps, 'variant'>): React__default.JSX.Element;
-
-/**
- * Tabs (Radix): shadcn-style tab primitives.
- *
- * Design-system contract
- * - Scope: UI-only primitive.
- * - Tokens-only: semantic token classes only.
- * - A11y: Radix handles keyboard + aria.
- *
- * Reference: shadcn `tabs.tsx`.
+ * Unified implementation using Radix UI primitives.
+ * Includes both low-level primitives (TabsRoot, TabsList, TabsTrigger, TabsContent)
+ * and a high-level Tabs component for variant-based usage.
  */
 
 type TabsRootProps = React$1.ComponentProps<typeof TabsPrimitive.Root>;
 type TabsListProps = React$1.ComponentProps<typeof TabsPrimitive.List> & {
-    /** Visual style of the tab list. */
-    variant?: 'segmented' | 'line' | 'line-separator';
+    variant?: 'segmented' | 'line' | 'line-separator' | 'container' | 'underline' | 'simple';
 };
 type TabsTriggerProps = React$1.ComponentProps<typeof TabsPrimitive.Trigger>;
 type TabsContentProps = React$1.ComponentProps<typeof TabsPrimitive.Content>;
@@ -2987,6 +2932,23 @@ declare function TabsRoot({ className, ...props }: TabsRootProps): React$1.JSX.E
 declare function TabsList({ className, variant, ...props }: TabsListProps): React$1.JSX.Element;
 declare function TabsTrigger({ className, ...props }: TabsTriggerProps): React$1.JSX.Element;
 declare function TabsContent({ className, ...props }: TabsContentProps): React$1.JSX.Element;
+type TabsVariant = 'simple' | 'underline' | 'container' | 'segmented' | 'line' | 'line-separator';
+interface TabsItem {
+    id: string;
+    label: string;
+    icon?: React$1.ReactNode;
+}
+interface TabsProps {
+    items?: readonly TabsItem[];
+    children?: React$1.ReactNode;
+    value: string;
+    onValueChange: (id: string) => void;
+    variant?: TabsVariant;
+    className?: string;
+}
+declare function Tabs({ items, children, value, onValueChange, variant, className, }: TabsProps): React$1.JSX.Element;
+type TabsWithContainerItem = TabsItem;
+declare function TabsWithContainer(props: Omit<TabsProps, 'variant'>): React$1.JSX.Element;
 
 /** Shared collapsible section used across Colors, Typography, Other tabs (design-system consistency) */
 interface CollapsibleSectionProps {
@@ -3073,6 +3035,13 @@ declare function FormLabel({ className, ...props }: React$1.ComponentProps<typeo
 declare function FormControl(props: React$1.ComponentProps<typeof Slot>): React$1.JSX.Element;
 declare function FormDescription({ className, ...props }: React$1.ComponentProps<'p'>): React$1.JSX.Element;
 declare function FormMessage({ className, ...props }: React$1.ComponentProps<'p'>): React$1.JSX.Element;
+
+/**
+ * ErrorMessage
+ * Inline form error message with minimal gap. Use below form inputs for validation errors.
+ * Consistent styling: text-xs, destructive color, mt-px for tight spacing.
+ */
+declare const ErrorMessage: React$1.ForwardRefExoticComponent<Omit<React$1.DetailedHTMLProps<React$1.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, "ref"> & React$1.RefAttributes<HTMLParagraphElement>>;
 
 declare function NavigationMenuRoot({ className, children, viewport, ...props }: React$1.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
     viewport?: boolean;
@@ -3652,16 +3621,10 @@ type ToastOptions = Parameters<typeof toast>[1];
 declare function toastSemantic(variant: ToastSemanticVariant, message: ToastMessage, options?: ToastOptions): string | number;
 
 /**
- * Select (Radix): Composable select primitives.
- *
- * Design-system contract (CONTRIBUTING.md):
- * - Scope: UI-only primitive; no domain logic.
- * - Tokens-only: semantic token classes only; no hardcoded colors.
- * - Minimal state: Radix handles value, open state, a11y.
- * - Composition: SelectRoot, SelectTrigger, SelectValue, SelectContent,
- *   SelectItem, SelectGroup, SelectLabel, SelectSeparator.
- *
- * @see https://ui.shadcn.com/docs/components/radix/select
+ * Select
+ * Unified implementation using Radix UI primitives and Native Select.
+ * Includes both low-level primitives (SelectRoot, SelectList, etc.)
+ * and a high-level Select component for variant-based usage.
  */
 
 declare const SelectRoot: React$1.FC<SelectPrimitive.SelectProps>;
@@ -3676,10 +3639,20 @@ type SelectItemProps = React$1.ComponentProps<typeof SelectPrimitive.Item>;
 type SelectLabelProps = React$1.ComponentProps<typeof SelectPrimitive.Label>;
 type SelectSeparatorProps = React$1.ComponentProps<typeof SelectPrimitive.Separator>;
 declare function SelectTrigger({ className, size, children, ...props }: SelectTriggerProps): React$1.JSX.Element;
-declare function SelectContent({ className, children, position, ...props }: SelectContentProps): React$1.JSX.Element;
+declare function SelectContent({ className, children, position, sideOffset, ...props }: SelectContentProps): React$1.JSX.Element;
 declare function SelectLabel({ className, ...props }: SelectLabelProps): React$1.JSX.Element;
 declare function SelectItem({ className, children, ...props }: SelectItemProps): React$1.JSX.Element;
 declare function SelectSeparator({ className, ...props }: SelectSeparatorProps): React$1.JSX.Element;
+type NativeSelectSize = "sm" | "default" | "lg";
+interface NativeSelectProps extends Omit<React$1.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+    size?: NativeSelectSize;
+    invalid?: boolean;
+    fullWidth?: boolean;
+}
+declare const NativeSelect: React$1.ForwardRefExoticComponent<NativeSelectProps & React$1.RefAttributes<HTMLSelectElement>>;
+interface SelectProps extends React$1.SelectHTMLAttributes<HTMLSelectElement> {
+}
+declare const Select: React$1.ForwardRefExoticComponent<SelectProps & React$1.RefAttributes<HTMLSelectElement>>;
 
 /**
  * ButtonTooltip / Tooltip: Lightweight tooltip wrapper.
@@ -3865,4 +3838,4 @@ interface FooterBlockProps {
 
 declare function FooterBlock({ data, slots, className, border }: FooterBlockProps): React__default.JSX.Element;
 
-export { Accordion, AccordionGroup, type AccordionGroupItem, type AccordionGroupMultipleProps, type AccordionGroupProps, type AccordionGroupSingleProps, type AccordionProps, Alert, AlertDialog, AlertDialogAction, type AlertDialogActionProps, AlertDialogCancel, type AlertDialogCancelProps, AlertDialogContent, type AlertDialogContentProps, AlertDialogDescription, type AlertDialogDescriptionProps, AlertDialogFooter, type AlertDialogFooterProps, AlertDialogHeader, type AlertDialogHeaderProps, type AlertDialogProps, AlertDialogTitle, type AlertDialogTitleProps, AlertDialogTrigger, type AlertDialogTriggerProps, type AlertProps, type AlertVariant, AppProvider, AspectRatio, type AspectRatioPreset, type AspectRatioProps, type AsyncState, Avatar, AvatarBadge, type AvatarBadgeProps, type AvatarBadgeVariant, AvatarFallback, type AvatarFallbackProps, type AvatarFallbackVariant, AvatarGroup, AvatarGroupCount, type AvatarGroupCountProps, type AvatarGroupOverlap, type AvatarGroupProps, AvatarImage, type AvatarImageProps, type AvatarProps, type AvatarSize, Badge, type BadgeProps, type BadgeSize, type BadgeVariant, Breadcrumb, type BreadcrumbItem, type BreadcrumbProps, type BreadcrumbSeparator, Button, ButtonGroup, ButtonGroupItem, type ButtonGroupItemProps, type ButtonGroupOrientation, type ButtonGroupProps, ButtonGroupSeparator, type ButtonGroupSeparatorProps, type ButtonProps, type ButtonSize, ButtonTooltip, type ButtonTooltipProps, type ButtonVariant, Calendar, Card, CardAction, CardContent, CardDecorator, type CardDecoratorProps, CardDescription, CardFooter, CardHeader, CardImage, type CardProps, CardSkeleton, CardTitle, Carousel, type CarouselApi, CarouselContent, type CarouselContentProps, CarouselItem, type CarouselItemProps, CarouselNext, type CarouselNextProps, type CarouselOptions, type CarouselPlugin, CarouselPrevious, type CarouselPreviousProps, type CarouselProps, type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartStyle, ChartTooltip, ChartTooltipContent, Checkbox, type CheckboxProps, Chip, type ChipProps, type ChipSize, type ChipVariant, ClassicDropdown, Collapsible, CollapsibleContent, CollapsibleSection, CollapsibleTrigger, type ColorGroup, ColorInput, type ColorTheme, ColorsPanel, Combobox, type ComboboxOption, type ComboboxProps, Command, CommandDialog, type CommandDialogProps, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, type CommandProps, CommandSeparator, CommandShortcut, Container, type ContainerProps, ContextMenu, ContextMenuCheckboxItem, type ContextMenuCheckboxItemProps, ContextMenuContent, type ContextMenuContentProps, ContextMenuGroup, ContextMenuItem, type ContextMenuItemProps, ContextMenuLabel, type ContextMenuLabelProps, ContextMenuPortal, type ContextMenuProps, ContextMenuRadioGroup, type ContextMenuRadioGroupProps, ContextMenuRadioItem, type ContextMenuRadioItemProps, ContextMenuSeparator, type ContextMenuSeparatorProps, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, type ContextMenuSubContentProps, type ContextMenuSubProps, ContextMenuSubTrigger, type ContextMenuSubTriggerProps, ContextMenuTrigger, type ContextMenuTriggerProps, type CustomThemeArtifactV1, type CustomThemeBase, type CustomThemeLayoutOverrides, type CustomThemeOverrides, DashboardCard, DatePicker, type DatePickerProps, DatePickerRange, type DatePickerRangeProps, Dialog, DialogClose, type DialogCloseProps, DialogContent, type DialogContentProps, DialogDescription, type DialogDescriptionProps, DialogFooter, type DialogFooterProps, DialogHeader, type DialogHeaderProps, DialogOverlay, type DialogOverlayProps, DialogPortal, type DialogPortalProps, type DialogProps, DialogTitle, type DialogTitleProps, DialogTrigger, type DialogTriggerProps, Drawer, DrawerClose, type DrawerCloseProps, DrawerContent, type DrawerContentProps, DrawerDescription, type DrawerDescriptionProps, DrawerFooter, type DrawerFooterProps, DrawerHeader, type DrawerHeaderProps, DrawerOverlay, type DrawerOverlayProps, DrawerPortal, type DrawerPortalProps, type DrawerProps, DrawerTitle, type DrawerTitleProps, DrawerTrigger, type DrawerTriggerProps, type DropdownAlign, DropdownIconMenu, type DropdownIconMenuProps, DropdownMenu, DropdownMenuAction, type DropdownMenuActionProps, type DropdownMenuAlign, DropdownMenuCheckboxItem, type DropdownMenuCheckboxItemProps, DropdownMenuContent, type DropdownMenuContentProps, DropdownMenuGroup, type DropdownMenuGroupProps, DropdownMenuItem, type DropdownMenuItemProps, DropdownMenuLabel, type DropdownMenuLabelProps, DropdownMenuPortal, type DropdownMenuPortalProps, type DropdownMenuProps, DropdownMenuRadioGroup, type DropdownMenuRadioGroupProps, DropdownMenuRadioItem, type DropdownMenuRadioItemProps, DropdownMenuSectionLabel, DropdownMenuSeparator, type DropdownMenuSeparatorProps, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, type DropdownMenuSubContentProps, type DropdownMenuSubProps, DropdownMenuSubTrigger, type DropdownMenuSubTriggerProps, DropdownMenuTrigger, type DropdownMenuTriggerProps, type DropdownOption, DropdownProfile, type DropdownProfileProps, DropdownSelect, type DropdownSelectProps, Empty, type EmptyProps, ErrorBoundary, ErrorFallback, Field, type FieldProps, type FieldValidation, FileInput, type FileInputProps, FooterBlock, type FooterBlockData, type FooterBlockProps, type FooterBlockSlots, type FooterColumn, type FooterLink, type FooterSocialLink, Form, type FormComponentProps, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Grid, type GridProps, Header, HeaderBlock, type HeaderBlockData, type HeaderBlockProps, type HeaderBlockSlots, type HeaderCtaItem, type HeaderLinkItem, Heading, type HeadingLevel, type HeadingProps, HoverCard, HoverCardContent, type HoverCardContentProps, type HoverCardProps, HoverCardTrigger, type HoverCardTriggerProps, ICON_DEFAULT_SIZE, ICON_DEFAULT_STROKE_WIDTH, ICON_SIZES, Icon, type IconProps, type IconSize, ImportModal, type ImportedTheme, Input, InputGroup, InputGroupAddon, type InputGroupAddonAlign, type InputGroupAddonProps, InputGroupInput, type InputGroupInputProps, type InputGroupProps, InputGroupTextarea, type InputGroupTextareaProps, InputOTP, InputOTPGroup, type InputOTPGroupProps, type InputOTPProps, InputOTPSeparator, type InputOTPSeparatorOrientation, type InputOTPSeparatorProps, InputOTPSingle, type InputOTPSingleProps, type InputOTPSize, InputOTPSlot, type InputOTPSlotProps, type InputOTPSlotVariant, type InputProps, type InteractiveComponentProps, Kbd, type KbdProps, Label, type LabelProps, LayoutTab, Lead, LoadingSpinner, Logo, Menubar, MenubarCheckboxItem, type MenubarCheckboxItemProps, MenubarContent, type MenubarContentProps, MenubarGroup, MenubarItem, type MenubarItemProps, MenubarLabel, type MenubarLabelProps, MenubarMenu, type MenubarMenuProps, MenubarPortal, type MenubarProps, MenubarRadioGroup, type MenubarRadioGroupProps, MenubarRadioItem, type MenubarRadioItemProps, MenubarSeparator, type MenubarSeparatorProps, MenubarShortcut, MenubarSub, MenubarSubContent, type MenubarSubContentProps, type MenubarSubProps, MenubarSubTrigger, type MenubarSubTriggerProps, MenubarTrigger, type MenubarTriggerProps, Modal, type ModalProps, type ModalSize, Muted, NativeSelect, type NativeSelectProps, type NativeSelectSize, Navbar, NavigationMenuRoot as NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport, OtherPanel, Page, type PageProps, Pagination, type PaginationProps, type PaginationVariant, type PolymorphicProps, Popover, PopoverAnchor, type PopoverAnchorProps, PopoverContent, type PopoverContentProps, type PopoverProps, PopoverTrigger, type PopoverTriggerProps, Progress, type ProgressProps, type ProgressSize, type ProgressVariant, Radio, RadioGroup, RadioGroupItem, type RadioGroupItemProps, type RadioGroupProps, type RadioProps, Tooltip as RadixTooltip, TooltipContent as RadixTooltipContent, type TooltipContentProps as RadixTooltipContentProps, type TooltipProps as RadixTooltipProps, TooltipProvider as RadixTooltipProvider, type TooltipProviderProps as RadixTooltipProviderProps, TooltipTrigger as RadixTooltipTrigger, type TooltipTriggerProps as RadixTooltipTriggerProps, ResizableHandle, type ResizableHandleProps, ResizablePanel, ResizablePanelGroup, type ResizablePanelGroupProps, type ResizablePanelProps, ResponsiveDialog, type ResponsiveDialogMode, type ResponsiveDialogProps, type ResponsiveDrawerDirection, RichTextEditor, type RichTextEditorProps, type RichTextEditorSize, ScrollArea, type ScrollAreaProps, type ScrollAreaViewportProps, ScrollBar, type ScrollBarProps, Section, type SectionProps, Select, SelectContent, type SelectContentProps, SelectGroup, SelectItem, type SelectItemProps, SelectLabel, type SelectLabelProps, type SelectProps, SelectRoot, type SelectRootProps, SelectSeparator, type SelectSeparatorProps, SelectTrigger, type SelectTriggerProps, SelectValue, Separator, type SeparatorProps, Sheet, SheetClose, type SheetCloseProps, SheetContent, type SheetContentProps, type SheetContentSide, SheetDescription, type SheetDescriptionProps, SheetFooter, type SheetFooterProps, SheetHeader, type SheetHeaderProps, SheetOverlay, type SheetOverlayProps, SheetPortal, type SheetPortalProps, type SheetProps, SheetTitle, type SheetTitleProps, SheetTrigger, type SheetTriggerProps, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarLink, SidebarLinkGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator, SimpleCard, Skeleton, type SkeletonLineSize, type SkeletonProps, type SkeletonRadius, type SkeletonTone, Slider, type SliderProps, type SliderSize, type SliderVariant, Small, Stack, type StackProps, type StandardComponentProps, StatCard, Switch, type SwitchProps, Table, TableBody, type TableBodyProps, TableCaption, type TableCaptionProps, TableCell, type TableCellProps, TableFooter, type TableFooterProps, TableHead, type TableHeadProps, TableHeader, type TableHeaderProps, type TableProps, TableRow, type TableRowProps, TableSkeleton, Tabs, TabsContent, type TabsContentProps, TabsList, type TabsListProps, TabsRoot, type TabsRootProps, TabsTrigger, type TabsTriggerProps, TabsWithContainer, type TabsWithContainerItem, Text, type TextProps, Textarea, type TextareaProps, type TextareaSize, ThemeCustomizer, type ThemeCustomizerSection, type ThemePreset, type ThemeStyleProps, type ThemeStyles, ThemeTab, ThemeToggleIcon, Toaster, type ToasterProps, Toggle, ToggleGroup, ToggleGroupItem, type ToggleGroupItemProps, type ToggleGroupOrientation, type ToggleGroupProps, type ToggleGroupType, type ToggleProps, type ToggleSize, type ToggleVariant, Tooltip$1 as Tooltip, type TooltipProps$1 as TooltipProps, type TransitionState, TypographyPanel, type UseAsyncStateOptions, type UseCounterOptions, type UseFormValidationOptions, type UseTransitionStateOptions, type ValidationRule, type VariantComponentProps, type VariantConfig, announceToScreenReader, applyImportedTheme, applyRadius, applyThemePreset, baseColors, cn, colorGroups, colorThemes, combine, conditional, createIcon, createKeyframe, createRule, createStandardProps, createVariants, debounce, doubleRaf, email, focusFirstElement, focusLastElement, focusNextElement, focusPreviousElement, generateId, getAccessibleName, getAriaDescribedBy, getAriaLabel, getFocusableElements, getRespectfulDuration, getTransitionClass, handleColorChange, isFocusable, isVisibleToScreenReader, max, maxLength, min, minLength, navigationMenuTriggerClass, numberRange, pattern, radiusOptions, raf, required, resetTheme, shouldReduceMotion, themePresets, throttle, toastSemantic, toggleVariants, url, useAppProvider, useAriaLive, useAsyncState, useBreakpoint, useClickOutside, useCounter, useDebounce, useErrorHandler, useFocusReturn, useFocusTrap, useFormField, useFormValidation, useMediaQuery, usePrefersReducedMotion, useThemeManager, useThrottle, useToggle, useTransitionState, useWindowWidth, variantClassNames };
+export { Accordion, AccordionGroup, type AccordionGroupItem, type AccordionGroupMultipleProps, type AccordionGroupProps, type AccordionGroupSingleProps, type AccordionProps, Alert, AlertDialog, AlertDialogAction, type AlertDialogActionProps, AlertDialogCancel, type AlertDialogCancelProps, AlertDialogContent, type AlertDialogContentProps, AlertDialogDescription, type AlertDialogDescriptionProps, AlertDialogFooter, type AlertDialogFooterProps, AlertDialogHeader, type AlertDialogHeaderProps, type AlertDialogProps, AlertDialogTitle, type AlertDialogTitleProps, AlertDialogTrigger, type AlertDialogTriggerProps, type AlertProps, type AlertVariant, AppProvider, AspectRatio, type AspectRatioPreset, type AspectRatioProps, type AsyncState, Avatar, AvatarBadge, type AvatarBadgeProps, type AvatarBadgeVariant, AvatarFallback, type AvatarFallbackProps, type AvatarFallbackVariant, AvatarGroup, AvatarGroupCount, type AvatarGroupCountProps, type AvatarGroupOverlap, type AvatarGroupProps, AvatarImage, type AvatarImageProps, type AvatarProps, type AvatarSize, Badge, type BadgeProps, type BadgeSize, type BadgeVariant, Breadcrumb, type BreadcrumbItem, type BreadcrumbProps, type BreadcrumbSeparator, Button, ButtonGroup, ButtonGroupItem, type ButtonGroupItemProps, type ButtonGroupOrientation, type ButtonGroupProps, ButtonGroupSeparator, type ButtonGroupSeparatorProps, type ButtonProps, type ButtonSize, ButtonTooltip, type ButtonTooltipProps, type ButtonVariant, Calendar, Card, CardAction, CardContent, CardDecorator, type CardDecoratorProps, CardDescription, CardFooter, CardHeader, CardImage, type CardProps, CardSkeleton, CardTitle, Carousel, type CarouselApi, CarouselContent, type CarouselContentProps, CarouselItem, type CarouselItemProps, CarouselNext, type CarouselNextProps, type CarouselOptions, type CarouselPlugin, CarouselPrevious, type CarouselPreviousProps, type CarouselProps, type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartStyle, ChartTooltip, ChartTooltipContent, Checkbox, type CheckboxProps, Chip, type ChipProps, type ChipSize, type ChipVariant, ClassicDropdown, Collapsible, CollapsibleContent, CollapsibleSection, CollapsibleTrigger, type ColorGroup, ColorInput, type ColorTheme, ColorsPanel, Combobox, type ComboboxOption, type ComboboxProps, Command, CommandDialog, type CommandDialogProps, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, type CommandProps, CommandSeparator, CommandShortcut, Container, type ContainerProps, ContextMenu, ContextMenuCheckboxItem, type ContextMenuCheckboxItemProps, ContextMenuContent, type ContextMenuContentProps, ContextMenuGroup, ContextMenuItem, type ContextMenuItemProps, ContextMenuLabel, type ContextMenuLabelProps, ContextMenuPortal, type ContextMenuProps, ContextMenuRadioGroup, type ContextMenuRadioGroupProps, ContextMenuRadioItem, type ContextMenuRadioItemProps, ContextMenuSeparator, type ContextMenuSeparatorProps, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, type ContextMenuSubContentProps, type ContextMenuSubProps, ContextMenuSubTrigger, type ContextMenuSubTriggerProps, ContextMenuTrigger, type ContextMenuTriggerProps, type CustomThemeArtifactV1, type CustomThemeBase, type CustomThemeLayoutOverrides, type CustomThemeOverrides, DashboardCard, DatePicker, type DatePickerProps, DatePickerRange, type DatePickerRangeProps, Dialog, DialogClose, type DialogCloseProps, DialogContent, type DialogContentProps, DialogDescription, type DialogDescriptionProps, DialogFooter, type DialogFooterProps, DialogHeader, type DialogHeaderProps, DialogOverlay, type DialogOverlayProps, DialogPortal, type DialogPortalProps, type DialogProps, DialogTitle, type DialogTitleProps, DialogTrigger, type DialogTriggerProps, Drawer, DrawerClose, type DrawerCloseProps, DrawerContent, type DrawerContentProps, DrawerDescription, type DrawerDescriptionProps, DrawerFooter, type DrawerFooterProps, DrawerHeader, type DrawerHeaderProps, DrawerOverlay, type DrawerOverlayProps, DrawerPortal, type DrawerPortalProps, type DrawerProps, DrawerTitle, type DrawerTitleProps, DrawerTrigger, type DrawerTriggerProps, type DropdownAlign, DropdownIconMenu, type DropdownIconMenuProps, DropdownMenu, DropdownMenuAction, type DropdownMenuActionProps, type DropdownMenuAlign, DropdownMenuCheckboxItem, type DropdownMenuCheckboxItemProps, DropdownMenuContent, type DropdownMenuContentProps, DropdownMenuGroup, type DropdownMenuGroupProps, DropdownMenuItem, type DropdownMenuItemProps, DropdownMenuLabel, type DropdownMenuLabelProps, DropdownMenuPortal, type DropdownMenuPortalProps, type DropdownMenuProps, DropdownMenuRadioGroup, type DropdownMenuRadioGroupProps, DropdownMenuRadioItem, type DropdownMenuRadioItemProps, DropdownMenuSectionLabel, DropdownMenuSeparator, type DropdownMenuSeparatorProps, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, type DropdownMenuSubContentProps, type DropdownMenuSubProps, DropdownMenuSubTrigger, type DropdownMenuSubTriggerProps, DropdownMenuTrigger, type DropdownMenuTriggerProps, type DropdownOption, DropdownProfile, type DropdownProfileProps, DropdownSelect, type DropdownSelectProps, Empty, type EmptyProps, ErrorBoundary, ErrorFallback, ErrorMessage, Field, type FieldProps, type FieldValidation, FileInput, type FileInputProps, FooterBlock, type FooterBlockData, type FooterBlockProps, type FooterBlockSlots, type FooterColumn, type FooterLink, type FooterSocialLink, Form, type FormComponentProps, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Grid, type GridProps, Header, HeaderBlock, type HeaderBlockData, type HeaderBlockProps, type HeaderBlockSlots, type HeaderCtaItem, type HeaderLinkItem, Heading, type HeadingLevel, type HeadingProps, HoverCard, HoverCardContent, type HoverCardContentProps, type HoverCardProps, HoverCardTrigger, type HoverCardTriggerProps, ICON_DEFAULT_SIZE, ICON_DEFAULT_STROKE_WIDTH, ICON_SIZES, Icon, type IconProps, type IconSize, ImportModal, type ImportedTheme, Input, InputGroup, InputGroupAddon, type InputGroupAddonAlign, type InputGroupAddonProps, InputGroupInput, type InputGroupInputProps, type InputGroupProps, InputGroupTextarea, type InputGroupTextareaProps, InputOTP, InputOTPGroup, type InputOTPGroupProps, type InputOTPProps, InputOTPSeparator, type InputOTPSeparatorOrientation, type InputOTPSeparatorProps, InputOTPSingle, type InputOTPSingleProps, type InputOTPSize, InputOTPSlot, type InputOTPSlotProps, type InputOTPSlotVariant, type InputProps, type InteractiveComponentProps, Kbd, type KbdProps, Label, type LabelProps, LayoutTab, Lead, LoadingSpinner, Logo, Menubar, MenubarCheckboxItem, type MenubarCheckboxItemProps, MenubarContent, type MenubarContentProps, MenubarGroup, MenubarItem, type MenubarItemProps, MenubarLabel, type MenubarLabelProps, MenubarMenu, type MenubarMenuProps, MenubarPortal, type MenubarProps, MenubarRadioGroup, type MenubarRadioGroupProps, MenubarRadioItem, type MenubarRadioItemProps, MenubarSeparator, type MenubarSeparatorProps, MenubarShortcut, MenubarSub, MenubarSubContent, type MenubarSubContentProps, type MenubarSubProps, MenubarSubTrigger, type MenubarSubTriggerProps, MenubarTrigger, type MenubarTriggerProps, Modal, type ModalProps, type ModalSize, Muted, NativeSelect, type NativeSelectProps, type NativeSelectSize, Navbar, NavigationMenuRoot as NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport, OtherPanel, Page, type PageProps, Pagination, type PaginationProps, type PaginationVariant, type PolymorphicProps, Popover, PopoverAnchor, type PopoverAnchorProps, PopoverContent, type PopoverContentProps, type PopoverProps, PopoverTrigger, type PopoverTriggerProps, Progress, type ProgressProps, type ProgressSize, type ProgressVariant, Radio, RadioGroup, RadioGroupItem, type RadioGroupItemProps, type RadioGroupProps, type RadioProps, Tooltip as RadixTooltip, TooltipContent as RadixTooltipContent, type TooltipContentProps as RadixTooltipContentProps, type TooltipProps as RadixTooltipProps, TooltipProvider as RadixTooltipProvider, type TooltipProviderProps as RadixTooltipProviderProps, TooltipTrigger as RadixTooltipTrigger, type TooltipTriggerProps as RadixTooltipTriggerProps, ResizableHandle, type ResizableHandleProps, ResizablePanel, ResizablePanelGroup, type ResizablePanelGroupProps, type ResizablePanelProps, ResponsiveDialog, type ResponsiveDialogMode, type ResponsiveDialogProps, type ResponsiveDrawerDirection, RichTextEditor, type RichTextEditorProps, type RichTextEditorSize, ScrollArea, type ScrollAreaProps, type ScrollAreaViewportProps, ScrollBar, type ScrollBarProps, Section, type SectionProps, Select, SelectContent, type SelectContentProps, SelectGroup, SelectItem, type SelectItemProps, SelectLabel, type SelectLabelProps, type SelectProps, SelectRoot, type SelectRootProps, SelectSeparator, type SelectSeparatorProps, SelectTrigger, type SelectTriggerProps, SelectValue, Separator, type SeparatorProps, Sheet, SheetClose, type SheetCloseProps, SheetContent, type SheetContentProps, type SheetContentSide, SheetDescription, type SheetDescriptionProps, SheetFooter, type SheetFooterProps, SheetHeader, type SheetHeaderProps, SheetOverlay, type SheetOverlayProps, SheetPortal, type SheetPortalProps, type SheetProps, SheetTitle, type SheetTitleProps, SheetTrigger, type SheetTriggerProps, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarLink, SidebarLinkGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator, SimpleCard, Skeleton, type SkeletonLineSize, type SkeletonProps, type SkeletonRadius, type SkeletonTone, Slider, type SliderProps, type SliderSize, type SliderVariant, Small, Stack, type StackProps, type StandardComponentProps, StatCard, Switch, type SwitchProps, Table, TableBody, type TableBodyProps, TableCaption, type TableCaptionProps, TableCell, type TableCellProps, TableFooter, type TableFooterProps, TableHead, type TableHeadProps, TableHeader, type TableHeaderProps, type TableProps, TableRow, type TableRowProps, TableSkeleton, Tabs, TabsContent, type TabsContentProps, TabsList, type TabsListProps, TabsRoot, type TabsRootProps, TabsTrigger, type TabsTriggerProps, TabsWithContainer, type TabsWithContainerItem, Text, type TextProps, Textarea, type TextareaProps, type TextareaSize, ThemeCustomizer, type ThemeCustomizerSection, type ThemePreset, type ThemeStyleProps, type ThemeStyles, ThemeTab, ThemeToggleIcon, Toaster, type ToasterProps, Toggle, ToggleGroup, ToggleGroupItem, type ToggleGroupItemProps, type ToggleGroupOrientation, type ToggleGroupProps, type ToggleGroupType, type ToggleProps, type ToggleSize, type ToggleVariant, Tooltip$1 as Tooltip, type TooltipProps$1 as TooltipProps, type TransitionState, TypographyPanel, type UseAsyncStateOptions, type UseCounterOptions, type UseFormValidationOptions, type UseTransitionStateOptions, type ValidationRule, type VariantComponentProps, type VariantConfig, announceToScreenReader, applyImportedTheme, applyRadius, applyThemePreset, baseColors, cn, colorGroups, colorThemes, combine, conditional, createIcon, createKeyframe, createRule, createStandardProps, createVariants, debounce, doubleRaf, email, focusFirstElement, focusLastElement, focusNextElement, focusPreviousElement, generateId, getAccessibleName, getAriaDescribedBy, getAriaLabel, getFocusableElements, getRespectfulDuration, getTransitionClass, handleColorChange, isFocusable, isVisibleToScreenReader, max, maxLength, min, minLength, navigationMenuTriggerClass, numberRange, pattern, radiusOptions, raf, required, resetTheme, shouldReduceMotion, themePresets, throttle, toastSemantic, toggleVariants, url, useAppProvider, useAriaLive, useAsyncState, useBreakpoint, useClickOutside, useCounter, useDebounce, useErrorHandler, useFocusReturn, useFocusTrap, useFormField, useFormValidation, useMediaQuery, usePrefersReducedMotion, useThemeManager, useThrottle, useToggle, useTransitionState, useWindowWidth, variantClassNames };

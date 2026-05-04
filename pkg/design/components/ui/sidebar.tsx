@@ -161,18 +161,27 @@ export default function Sidebar({
         ? 'border-r border-sidebar-border bg-sidebar text-sidebar-foreground'
         : 'border-l border-sidebar-border bg-sidebar text-sidebar-foreground'
       : cn(
-          'rounded-xl border border-sidebar-border bg-sidebar text-sidebar-foreground',
-          'shadow-[var(--shadow-sm)]',
-          variant === 'floating' && 'm-2',
-          variant === 'inset' && 'm-2'
-        )
+        'rounded-xl border border-sidebar-border bg-sidebar text-sidebar-foreground',
+        'shadow-[var(--shadow-sm)]',
+        variant === 'floating' && 'm-2',
+        variant === 'inset' && 'm-2'
+      )
 
   const widthClasses = collapsible === 'icon' ? 'w-64 lg:w-14 lg:hover:w-64' : 'w-64'
   const mobilePosition = side === 'left' ? 'left-0' : 'right-0'
   const mobileClosedTranslate = side === 'left' ? '-translate-x-full' : 'translate-x-full'
 
   return (
-    <div className={cn('min-w-fit', className)} data-variant={variant} data-collapsible={collapsible} data-side={side}>
+    <div
+      className={cn(
+        'transition-all duration-200 ease-out',
+        collapsible === 'none' ? 'min-w-fit' : (open ? 'w-64' : 'w-0'),
+        className
+      )}
+      data-variant={variant}
+      data-collapsible={collapsible}
+      data-side={side}
+    >
       {showBackdrop ? (
         <div
           className={cn(
@@ -187,7 +196,8 @@ export default function Sidebar({
       <div
         ref={sidebarRef}
         className={cn(
-          'flex flex-col absolute z-50 lg:static top-0 lg:translate-x-0 min-h-[280px] lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out',
+          'flex flex-col absolute z-50 top-0 min-h-[280px] lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out',
+          collapsible === 'none' ? 'lg:static' : 'fixed lg:sticky',
           mobilePosition,
           widthClasses,
           containerChrome,

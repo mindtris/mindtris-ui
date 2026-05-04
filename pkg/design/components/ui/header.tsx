@@ -7,12 +7,15 @@ export default function Header({
   variant = 'default',
   leftSlot,
   rightSlot,
+  hideMobileMenuButton = false,
 }: {
   variant?: 'default' | 'v2' | 'v3'
   /** App-specific header content for the left side (logo, menu, etc.). */
   leftSlot?: ReactNode
   /** App-specific header actions (search, notifications, theme toggle, profile). Pass from app. */
   rightSlot?: ReactNode
+  /** When true, hides the hamburger menu button (e.g. for auth layout with full nav). */
+  hideMobileMenuButton?: boolean
 }) {
   const { sidebarOpen, setSidebarOpen } = useAppProvider()
 
@@ -23,19 +26,21 @@ export default function Header({
 
           {/* Header: Left side */}
           <div className="flex items-center gap-4">
-            <button
-              className="text-muted-foreground hover:text-foreground lg:hidden"
-              aria-controls="sidebar"
-              aria-expanded={sidebarOpen}
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4" y="5" width="16" height="2" />
-                <rect x="4" y="11" width="16" height="2" />
-                <rect x="4" y="17" width="16" height="2" />
-              </svg>
-            </button>
+            {!hideMobileMenuButton && (
+              <button
+                className="text-muted-foreground hover:text-foreground lg:hidden"
+                aria-controls="sidebar"
+                aria-expanded={sidebarOpen}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              >
+                <span className="sr-only">Open sidebar</span>
+                <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="5" width="16" height="2" />
+                  <rect x="4" y="11" width="16" height="2" />
+                  <rect x="4" y="17" width="16" height="2" />
+                </svg>
+              </button>
+            )}
             {leftSlot}
           </div>
 

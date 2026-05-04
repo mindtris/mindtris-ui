@@ -26,9 +26,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           // Native file inputs vary by browser; for consistent UI, prefer `FileInput`.
           // We only style the selector button here (token-driven).
           type === 'file' &&
-            'cursor-pointer file:mr-3 file:px-3 file:py-1.5 file:rounded-md file:border-0 file:bg-background file:text-muted-foreground file:text-xs file:font-medium',
+          'cursor-pointer file:mr-3 file:px-3 file:py-1.5 file:rounded-md file:border-0 file:bg-background file:text-muted-foreground file:text-xs file:font-medium',
           'placeholder:text-muted-foreground',
-          'hover:border-border/80 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-foreground/40',
+          'hover:border-border/80 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-primary',
           'disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed',
           sizeClasses[size],
           className
@@ -45,7 +45,7 @@ Input.displayName = 'Input'
  * Radio
  * Token-driven radio button component
  */
-export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> { }
 
 export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   ({ className, ...props }, ref) => {

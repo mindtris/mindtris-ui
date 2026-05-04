@@ -71,12 +71,12 @@ export function Field({
         <div data-slot="field-control" className="min-w-0">
           {React.isValidElement(children)
             ? React.cloneElement(children as React.ReactElement<{ id?: string; "aria-invalid"?: boolean; "aria-describedby"?: string }>, {
-                id: (children.props as { id?: string }).id ?? fieldId,
-                ...((invalid || error) && { "aria-invalid": true }),
-                ...((error || description) && {
-                  "aria-describedby": error ? `${fieldId}-error` : `${fieldId}-description`,
-                }),
-              })
+              id: (children.props as { id?: string }).id ?? fieldId,
+              ...((invalid || error) && { "aria-invalid": true }),
+              ...((error || description) && {
+                "aria-describedby": error ? `${fieldId}-error` : `${fieldId}-description`,
+              }),
+            })
             : children}
         </div>
       ) : null}

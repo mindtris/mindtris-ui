@@ -40,3 +40,6 @@ next-env.d.ts
 
 # Docs 
 pkg/design/CONTRIBUTING.md
+# Claude Code (local only)
+CLAUDE.md
+.claude/

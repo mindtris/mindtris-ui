@@ -133,7 +133,7 @@ export function Toaster(props: ToasterProps) {
           ),
           // Keep toast text lightweight (avoid “thick” feel).
           // Match Mindtris UI notifications: title reads as a label with a small bottom gap.
-          title: 'font-inherit text-sm font-medium leading-5 text-foreground mb-1',
+          title: 'font-inherit text-sm font-normal leading-5 text-foreground mb-1',
           // Match Mindtris UI notifications: body copy uses regular sizing and muted tone.
           description: 'font-inherit text-sm font-normal leading-5 text-muted-foreground',
           // Let title's `mb-1` control spacing (no extra gap).

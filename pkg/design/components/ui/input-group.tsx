@@ -115,22 +115,22 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>
     <InputGroupLayoutContext.Consumer>
       {(layout) => (
         <Input
-      ref={ref}
-      data-slot={dataSlot ?? "input-group-control"}
-      // Force padding to come from the group shell (like a regular Input).
-      // This avoids "stretched" placeholder text and keeps right icons padded.
-      className={cn(
-        "w-full min-w-0",
-        "text-left",
-        layout === "inline" &&
-          "flex-1 border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-0",
-        // Block layout: control area gets standard input padding.
-        layout === "block" &&
-          "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-3 py-2",
-        className
-      )}
-      {...props}
-    />
+          ref={ref}
+          data-slot={dataSlot ?? "input-group-control"}
+          // Force padding to come from the group shell (like a regular Input).
+          // This avoids "stretched" placeholder text and keeps right icons padded.
+          className={cn(
+            "w-full min-w-0",
+            "text-left",
+            layout === "inline" &&
+            "flex-1 border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-0",
+            // Block layout: control area gets standard input padding.
+            layout === "block" &&
+            "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-3 py-2",
+            className
+          )}
+          {...props}
+        />
       )}
     </InputGroupLayoutContext.Consumer>
   )
@@ -148,9 +148,9 @@ const InputGroupTextarea = React.forwardRef<HTMLTextAreaElement, InputGroupTexta
             "w-full min-w-0",
             "text-left",
             layout === "inline" &&
-              "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-0",
+            "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-0",
             layout === "block" &&
-              "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-3 py-2 resize-y",
+            "border-0 bg-transparent shadow-none hover:border-0 focus-visible:border-0 rounded-none px-3 py-2 resize-y",
             className
           )}
           {...props}

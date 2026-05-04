@@ -142,7 +142,7 @@ function RichTextToolbar({
 
   const btn =
     (name: 'bold' | 'italic' | 'strike' | 'code', label: string) =>
-    (onClick: () => void) =>
+      (onClick: () => void) =>
       (
         <button
           type="button"
@@ -366,7 +366,7 @@ export function RichTextEditor({
 
   const wrapperClass = cn(
     'mindtris-rich-text-editor rounded-lg border border-input bg-field shadow-none',
-    'hover:border-border/80 focus-within:outline-none focus-within:ring-0 focus-within:border-foreground/40',
+    'focus-within:outline-none focus-within:ring-0 focus-within:border-foreground/40',
     disabled && 'bg-muted opacity-70 pointer-events-none',
     className
   )

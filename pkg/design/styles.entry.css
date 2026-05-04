@@ -1,0 +1,18 @@
+/**
+ * CSS entrypoint for @mindtris/ui pre-compiled bundle.
+ * This file is compiled by the Tailwind CLI at build time to produce dist/styles.css.
+ * Consuming apps import '@mindtris/ui/styles' to get all component classes
+ * without needing Tailwind to scan node_modules.
+ */
+
+@import 'tailwindcss/utilities';
+
+/* Scan all component source files so Tailwind picks up every class string */
+@source "./index.ts";
+@source "./components";
+@source "./blocks";
+@source "./hooks";
+@source "./layout-primitives.tsx";
+@source "./section-primitives.tsx";
+@source "./theme-customizer-primitives.tsx";
+@source "./app-provider-primitives.tsx";
