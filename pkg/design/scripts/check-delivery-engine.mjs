@@ -42,46 +42,55 @@ const SENTINELS = [
 const extra = process.env.CHECK_EXTRA_SENTINEL
 const candidates = extra ? [...SENTINELS, extra] : SENTINELS
 
-// 1. Version agreement, EXACT. Three engines must be one engine:
-//    compileCore   - the tailwindcss the CLI actually imports (the CLI does NOT
-//                    dedupe: @tailwindcss/cli@X carries an exact nested core X,
-//                    so resolve from the CLI's own require context, never from
-//                    the root node_modules)
-//    consumerCore  - the FE's LOCKED resolution from its pnpm-lock (a ^ specifier
-//                    is not a version; the lockfile is)
-//    rootCore      - this package's own tailwindcss, kept coherent
-// The gate FAILS if it cannot determine any of them. No assumptions.
-// Filesystem realpaths, not require.resolve: the CLI is bin-only (no exports
-// main, resolve throws ERR_PACKAGE_PATH_NOT_EXPORTED). realpath follows the
-// pnpm symlink into .pnpm/<pkg>@<v>/node_modules/<pkg>, where the CLI's own
-// core dependency sits as a sibling.
+// 1. Version agreement, EXACT and fully self-contained (no other repo touched -
+// build and publish must work on a fresh clone and in this repo's own CI; the
+// cross-repo consumer assertion lives in check-consumer-engine.mjs, run where
+// the consumer lockfile exists):
+//    compileCore - the tailwindcss the CLI actually imports (the CLI does NOT
+//                  dedupe: @tailwindcss/cli@X carries an exact nested core X,
+//                  so resolve from the CLI's own context, never the root)
+//    rootCore    - this package's own tailwindcss
+//    pins        - the EXACT versions declared in package.json (no ranges)
+// A resolution failure is LOUD - never substitute a version read from
+// somewhere plausible; reporting an unmeasured engine as fact was the
+// original bug.
 const readV = (dir) => JSON.parse(readFileSync(path.join(dir, "package.json"), "utf8")).version
-const cliDir = realpathSync(path.join(pkgDir, "node_modules", "@tailwindcss", "cli"))
-const cliV = readV(cliDir)
-let compileCoreDir
+let cliV, compileCore, rootCore
 try {
-  compileCoreDir = path.dirname(createRequire(path.join(cliDir, "package.json")).resolve("tailwindcss/package.json"))
-} catch {
-  compileCoreDir = path.join(cliDir, "..", "..", "tailwindcss") // pnpm sibling layout fallback
-}
-const compileCore = readV(compileCoreDir)
-const rootCore = readV(realpathSync(path.join(pkgDir, "node_modules", "tailwindcss")))
-
-const feLock = path.resolve(pkgDir, "..", "..", "..", "simplifisign-frontend", "pnpm-lock.yaml")
-if (!existsSync(feLock)) {
-  console.error(`DELIVERY-ENGINE FAIL: cannot determine the consumer engine - FE lockfile not found at ${feLock}`)
+  const cliDir = realpathSync(path.join(pkgDir, "node_modules", "@tailwindcss", "cli"))
+  cliV = readV(cliDir)
+  let compileCoreDir
+  try {
+    compileCoreDir = path.dirname(createRequire(path.join(cliDir, "package.json")).resolve("tailwindcss/package.json"))
+  } catch {
+    compileCoreDir = path.join(cliDir, "..", "..", "tailwindcss") // pnpm sibling layout fallback
+  }
+  compileCore = readV(compileCoreDir)
+  rootCore = readV(realpathSync(path.join(pkgDir, "node_modules", "tailwindcss")))
+} catch (e) {
+  console.error(`DELIVERY-ENGINE FAIL: cannot resolve the compile engine from the CLI's own context: ${e.message}`)
   process.exit(1)
 }
-const lockText = readFileSync(feLock, "utf8")
-const lockMatch = lockText.match(/\n {6}tailwindcss:\n {8}specifier: [^\n]*\n {8}version: ([0-9][^\s(]*)/)
-if (!lockMatch) {
-  console.error(`DELIVERY-ENGINE FAIL: cannot parse the tailwindcss locked version out of ${feLock}`)
+
+const pkgJson = JSON.parse(readFileSync(path.join(pkgDir, "package.json"), "utf8"))
+const pinCli = pkgJson.devDependencies?.["@tailwindcss/cli"]
+const pinCore = pkgJson.devDependencies?.["tailwindcss"]
+const exact = (s) => /^[0-9]/.test(s ?? "")
+if (!exact(pinCli) || !exact(pinCore)) {
+  console.error(`DELIVERY-ENGINE FAIL: tailwind pins must be exact versions, got @tailwindcss/cli "${pinCli}" / tailwindcss "${pinCore}".`)
   process.exit(1)
 }
-const consumerCore = lockMatch[1]
+if (compileCore !== rootCore || compileCore !== pinCore || cliV !== pinCli) {
+  console.error(`DELIVERY-ENGINE FAIL: engine mismatch - compile core ${compileCore} (via cli ${cliV}), package core ${rootCore}, pins cli ${pinCli} / core ${pinCore}. One engine, everywhere.`)
+  process.exit(1)
+}
 
-if (compileCore !== consumerCore || compileCore !== rootCore) {
-  console.error(`DELIVERY-ENGINE FAIL: engine mismatch - compile core ${compileCore} (via cli ${cliV}), consumer locked ${consumerCore}, package core ${rootCore}. Align package.json pins to the consumer.`)
+// 2. The @property fallback block must survive rebuilds (presence, not a count -
+// registration counts move across versions; the regression class is the block
+// vanishing, as it did under the 4.0.17 build).
+const stylesPath = path.join(pkgDir, "dist", "styles.css")
+if (existsSync(stylesPath) && !readFileSync(stylesPath, "utf8").includes("@layer properties")) {
+  console.error("DELIVERY-ENGINE FAIL: dist/styles.css lost its @layer properties @supports fallback block.")
   process.exit(1)
 }
 
@@ -114,7 +123,7 @@ try {
     // process.exit() would skip the finally cleanup - set exitCode and fall through.
     process.exitCode = 1
   } else {
-    console.log(`delivery-engine check OK: ${candidates.length} sentinel(s) compile under tailwindcss ${compileCore} (== consumer locked ${consumerCore}, cli ${cliV})`)
+    console.log(`delivery-engine check OK: ${candidates.length} sentinel(s) compile under tailwindcss ${compileCore} (cli ${cliV}, pins exact; consumer agreement via check:consumer)`)
   }
 } finally {
   rmSync(tmp, { recursive: true, force: true })

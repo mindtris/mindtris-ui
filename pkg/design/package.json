@@ -23,6 +23,7 @@
   "scripts": {
     "build": "tsup && pnpm exec tailwindcss -i ./styles.entry.css -o ./dist/styles.css --minify && node scripts/check-delivery-engine.mjs",
     "check:delivery": "node scripts/check-delivery-engine.mjs",
+    "check:consumer": "node scripts/check-consumer-engine.mjs",
     "prepublishOnly": "pnpm run build"
   },
   "exports": {
