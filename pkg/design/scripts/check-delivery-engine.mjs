@@ -68,9 +68,11 @@ try {
   if (missing.length > 0) {
     console.error(`DELIVERY-ENGINE FAIL: ${missing.length} class(es) emit no rule under tailwindcss ${coreV}:`)
     for (const m of missing) console.error(`  - ${m}`)
-    process.exit(1)
+    // process.exit() would skip the finally cleanup - set exitCode and fall through.
+    process.exitCode = 1
+  } else {
+    console.log(`delivery-engine check OK: ${candidates.length} sentinel(s) compile under tailwindcss ${coreV} (cli ${cliV})`)
   }
-  console.log(`delivery-engine check OK: ${candidates.length} sentinel(s) compile under tailwindcss ${coreV} (cli ${cliV})`)
 } finally {
   rmSync(tmp, { recursive: true, force: true })
 }
