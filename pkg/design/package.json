@@ -21,7 +21,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup && pnpm exec tailwindcss -i ./styles.entry.css -o ./dist/styles.css --minify",
+    "build": "tsup && pnpm exec tailwindcss -i ./styles.entry.css -o ./dist/styles.css --minify && node scripts/check-delivery-engine.mjs",
+    "check:delivery": "node scripts/check-delivery-engine.mjs",
     "prepublishOnly": "pnpm run build"
   },
   "exports": {
@@ -79,7 +80,7 @@
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-context-menu": "^2.2.16",
     "@radix-ui/react-menubar": "^1.1.16",
-    "@tailwindcss/cli": "^4.2.1",
+    "@tailwindcss/cli": "4.0.17",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
     "tailwind-merge": "^3.0.1",
