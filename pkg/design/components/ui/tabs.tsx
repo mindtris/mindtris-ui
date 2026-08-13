@@ -33,7 +33,7 @@ export function TabsList({ className, variant = 'segmented', ...props }: TabsLis
         variant === 'segmented'
           ? 'bg-muted text-muted-foreground h-9 rounded-lg p-[3px]'
           : variant === 'line' || variant === 'underline' || variant === 'simple'
-            ? 'bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6'
+            ? 'bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6 max-w-full overflow-x-auto'
             : variant === 'line-separator'
               ? 'bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6 border-b border-border w-full'
               : variant === 'container'

@@ -175,7 +175,7 @@ export default function Sidebar({
     <div
       className={cn(
         'transition-all duration-200 ease-out',
-        collapsible === 'none' ? 'min-w-fit' : (open ? 'w-64' : 'w-0'),
+        collapsible === 'none' ? 'min-w-fit' : (open ? 'w-0 lg:w-64' : 'w-0'),
         className
       )}
       data-variant={variant}
@@ -196,7 +196,7 @@ export default function Sidebar({
       <div
         ref={sidebarRef}
         className={cn(
-          'flex flex-col absolute z-50 top-0 min-h-[280px] lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out',
+          'flex flex-col absolute z-50 top-0 max-lg:bottom-0 lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out',
           collapsible === 'none' ? 'lg:static' : 'fixed lg:sticky',
           mobilePosition,
           widthClasses,

@@ -4117,7 +4117,7 @@ __name(InputOTPSeparator, "InputOTPSeparator");
 var slotSizeClasses = {
   sm: "h-8 w-8 text-xs",
   md: "h-10 w-10 text-sm",
-  lg: "h-12 w-12 text-base"
+  lg: "h-10 w-10 text-sm sm:h-12 sm:w-12 sm:text-base"
 };
 function InputOTPSlot({ index, size = "md", className, ...props }) {
   const { slots } = useInputOTPContext();
@@ -5593,7 +5593,7 @@ function DialogContent({
       {
         "data-slot": "dialog-content",
         className: cn(
-          "fixed left-[50%] top-[50%] z-[82] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-none bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl",
+          "fixed left-[50%] top-[50%] z-[82] grid w-full max-w-[calc(100%-2rem)] sm:max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto translate-x-[-50%] translate-y-[-50%] gap-4 border-none bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-3xl",
           className
         ),
         ...props,
@@ -7019,7 +7019,7 @@ function Sidebar({
     {
       className: cn(
         "transition-all duration-200 ease-out",
-        collapsible === "none" ? "min-w-fit" : open ? "w-64" : "w-0",
+        collapsible === "none" ? "min-w-fit" : open ? "w-0 lg:w-64" : "w-0",
         className
       ),
       "data-variant": variant,
@@ -7042,7 +7042,7 @@ function Sidebar({
           {
             ref: sidebarRef,
             className: cn(
-              "flex flex-col absolute z-50 top-0 min-h-[280px] lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out",
+              "flex flex-col absolute z-50 top-0 max-lg:bottom-0 lg:min-h-[100dvh] overflow-y-auto transition-all duration-200 ease-out",
               collapsible === "none" ? "lg:static" : "fixed lg:sticky",
               mobilePosition,
               widthClasses,
@@ -9874,7 +9874,7 @@ function TabsList({ className, variant = "segmented", ...props }) {
       "data-variant": variant,
       className: cn(
         "group inline-flex w-fit items-center justify-center",
-        variant === "segmented" ? "bg-muted text-muted-foreground h-9 rounded-lg p-[3px]" : variant === "line" || variant === "underline" || variant === "simple" ? "bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6" : variant === "line-separator" ? "bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6 border-b border-border w-full" : variant === "container" ? "inline-flex w-fit flex-wrap items-center gap-2" : "",
+        variant === "segmented" ? "bg-muted text-muted-foreground h-9 rounded-lg p-[3px]" : variant === "line" || variant === "underline" || variant === "simple" ? "bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6 max-w-full overflow-x-auto" : variant === "line-separator" ? "bg-transparent text-muted-foreground h-auto rounded-none p-0 gap-6 border-b border-border w-full" : variant === "container" ? "inline-flex w-fit flex-wrap items-center gap-2" : "",
         className
       ),
       ...props
@@ -12133,7 +12133,7 @@ function Toaster3(props) {
           ),
           // Keep toast text lightweight (avoid “thick” feel).
           // Match Mindtris UI notifications: title reads as a label with a small bottom gap.
-          title: "font-inherit text-sm font-medium leading-5 text-foreground mb-1",
+          title: "font-inherit text-sm font-normal leading-5 text-foreground mb-1",
           // Match Mindtris UI notifications: body copy uses regular sizing and muted tone.
           description: "font-inherit text-sm font-normal leading-5 text-muted-foreground",
           // Let title's `mb-1` control spacing (no extra gap).
