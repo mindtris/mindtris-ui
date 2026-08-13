@@ -24,12 +24,14 @@ if (!existsSync(lockPath)) {
   console.error(`CONSUMER-ENGINE FAIL: consumer lockfile not found at ${lockPath}`)
   process.exit(1)
 }
-const lockMatch = readFileSync(lockPath, "utf8").match(/\n {6}tailwindcss:\n {8}specifier: [^\n]*\n {8}version: ([0-9][^\s(]*)/)
-if (!lockMatch) {
-  console.error(`CONSUMER-ENGINE FAIL: cannot parse the tailwindcss locked version out of ${lockPath}`)
+const lockMatches = [...readFileSync(lockPath, "utf8").matchAll(/\n {6}tailwindcss:\n {8}specifier: [^\n]*\n {8}version: ([0-9][^\s(]*)/g)]
+if (lockMatches.length !== 1) {
+  // 0 = unparseable/format change; >1 = multiple importers and first-match would
+  // silently bind to the wrong one. Both fail loudly.
+  console.error(`CONSUMER-ENGINE FAIL: expected exactly 1 tailwindcss importer entry in ${lockPath}, found ${lockMatches.length}.`)
   process.exit(1)
 }
-const consumerCore = lockMatch[1]
+const consumerCore = lockMatches[0][1]
 
 let compileCore
 try {

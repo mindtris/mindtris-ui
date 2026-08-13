@@ -4,12 +4,15 @@
 // the FE generates the real rule by @source-scanning the dist with ITS engine, so
 // a newer-syntax class here ships as a silent no-op with green builds on both sides.
 //
-// Two assertions:
-//   1. Version agreement: @tailwindcss/cli and tailwindcss resolve to the same
-//      major.minor, so the compile below runs the delivery engine, not a newer one.
+// Self-contained assertions (no other repo touched; cross-repo consumer
+// agreement lives in check-consumer-engine.mjs, run where the consumer
+// lockfile exists):
+//   1. One engine everywhere, EXACT: the core the CLI actually imports ==
+//      this package's own core == the exact versions pinned in package.json.
 //   2. Every SENTINEL class emits its exact escaped selector when compiled.
 //      Extend SENTINELS with each design change that adds new utility syntax -
 //      this is the survived-content discipline, mechanized.
+//   3. dist/styles.css keeps its @layer properties @supports fallback block.
 //
 // Both-directions proof: CHECK_EXTRA_SENTINEL=<class> injects one more candidate;
 // an invalid class fails the run naming itself.
