@@ -9896,7 +9896,12 @@ function TabsTrigger({ className, ...props }) {
     {
       "data-slot": "tabs-trigger",
       className: cn(
-        "inline-flex h-full max-sm:min-h-11 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap cursor-pointer transition-all",
+        "inline-flex h-full items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap cursor-pointer transition-all",
+        // 44px touch floor on the rail variants only. Segmented tracks pin their own
+        // compact heights (h-8/h-10 toolbars, signature modal) and min-height would
+        // silently defeat them - tailwind-merge treats height and min-height as
+        // separate groups, so callers cannot override this back.
+        "max-sm:group-data-[variant=line]:min-h-11 max-sm:group-data-[variant=underline]:min-h-11 max-sm:group-data-[variant=simple]:min-h-11",
         // Icon normalization
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "text-muted-foreground hover:text-foreground",
