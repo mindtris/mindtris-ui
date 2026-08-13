@@ -63,7 +63,7 @@ export function InputOTP({
       containerClassName={cn(
         "group flex items-center",
         slotVariant === "connected" && "gap-2",
-        slotVariant === "boxed" && "gap-3",
+        slotVariant === "boxed" && "gap-2 sm:gap-3",
         disabled ? "cursor-not-allowed opacity-50" : undefined,
         containerClassName
       )}
@@ -88,7 +88,7 @@ export function InputOTPGroup({ className, ...props }: InputOTPGroupProps) {
       data-variant={variant}
       className={cn(
         "flex items-center",
-        variant === "boxed" && "gap-3",
+        variant === "boxed" && "gap-2 sm:gap-3",
         className
       )}
       {...props}
@@ -127,7 +127,7 @@ export type InputOTPSize = "sm" | "md" | "lg"
 const slotSizeClasses: Record<InputOTPSize, string> = {
   sm: "h-8 w-8 text-xs",
   md: "h-10 w-10 text-sm",
-  lg: "h-10 w-10 text-sm sm:h-12 sm:w-12 sm:text-base",
+  lg: "h-11 w-11 text-sm sm:h-12 sm:w-12 sm:text-base",
 }
 
 export type InputOTPSlotProps = React.HTMLAttributes<HTMLDivElement> & {

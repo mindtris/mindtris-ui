@@ -81,8 +81,16 @@ function TooltipContent({
         {...props}
       >
         {children}
-        {/* Arrow: Radix default triangle, colored per variant. */}
-        <TooltipPrimitive.Arrow width={10} height={5} className={cn("z-50", arrowVariantClasses[variant])} />
+        {/* Shadcn-style rotated-square arrow (no seam) — the playground-approved curved pointer.
+            The bg-* variant classes are load-bearing here: the square is drawn by the svg box's
+            background, rotated 45deg with a 2px radius tip. Do not swap back to the bare Radix
+            triangle without dropping bg-* (bg on the un-rotated svg paints a flat bar). */}
+        <TooltipPrimitive.Arrow
+          className={cn(
+            "z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]",
+            arrowVariantClasses[variant]
+          )}
+        />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   )

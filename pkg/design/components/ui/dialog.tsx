@@ -87,7 +87,7 @@ export function DialogContent({
             data-slot="dialog-close"
             className={cn(
               "absolute right-4 top-4 inline-flex cursor-pointer items-center justify-center rounded-md border-0 outline-none",
-              "h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted",
+              "h-11 w-11 sm:h-8 sm:w-8 text-muted-foreground hover:text-foreground hover:bg-muted",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               "disabled:pointer-events-none [&_svg]:pointer-events-none"
             )}

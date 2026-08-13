@@ -2798,7 +2798,15 @@ function TooltipContent({
       ...props,
       children: [
         children,
-        /* @__PURE__ */ jsx2(TooltipPrimitive.Arrow, { width: 10, height: 5, className: cn("z-50", arrowVariantClasses[variant]) })
+        /* @__PURE__ */ jsx2(
+          TooltipPrimitive.Arrow,
+          {
+            className: cn(
+              "z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]",
+              arrowVariantClasses[variant]
+            )
+          }
+        )
       ]
     }
   ) });
@@ -4068,7 +4076,7 @@ function InputOTP({
       containerClassName: cn(
         "group flex items-center",
         slotVariant === "connected" && "gap-2",
-        slotVariant === "boxed" && "gap-3",
+        slotVariant === "boxed" && "gap-2 sm:gap-3",
         disabled ? "cursor-not-allowed opacity-50" : void 0,
         containerClassName
       ),
@@ -4087,7 +4095,7 @@ function InputOTPGroup({ className, ...props }) {
       "data-variant": variant,
       className: cn(
         "flex items-center",
-        variant === "boxed" && "gap-3",
+        variant === "boxed" && "gap-2 sm:gap-3",
         className
       ),
       ...props
@@ -4117,7 +4125,7 @@ __name(InputOTPSeparator, "InputOTPSeparator");
 var slotSizeClasses = {
   sm: "h-8 w-8 text-xs",
   md: "h-10 w-10 text-sm",
-  lg: "h-10 w-10 text-sm sm:h-12 sm:w-12 sm:text-base"
+  lg: "h-11 w-11 text-sm sm:h-12 sm:w-12 sm:text-base"
 };
 function InputOTPSlot({ index, size = "md", className, ...props }) {
   const { slots } = useInputOTPContext();
@@ -5605,7 +5613,7 @@ function DialogContent({
               "data-slot": "dialog-close",
               className: cn(
                 "absolute right-4 top-4 inline-flex cursor-pointer items-center justify-center rounded-md border-0 outline-none",
-                "h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted",
+                "h-11 w-11 sm:h-8 sm:w-8 text-muted-foreground hover:text-foreground hover:bg-muted",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 "disabled:pointer-events-none [&_svg]:pointer-events-none"
               ),
@@ -9888,7 +9896,7 @@ function TabsTrigger({ className, ...props }) {
     {
       "data-slot": "tabs-trigger",
       className: cn(
-        "inline-flex h-full items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap cursor-pointer transition-all",
+        "inline-flex h-full max-sm:min-h-11 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap cursor-pointer transition-all",
         // Icon normalization
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "text-muted-foreground hover:text-foreground",
